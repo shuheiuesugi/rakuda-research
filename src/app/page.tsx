@@ -1,10 +1,9 @@
 "use client";
 
 import { useEffect, useState, useRef, useCallback } from "react";
-import "./globals.css";
 
 /* ============================================================
-   ラクダResearch Landing Page
+   Rakuda Research Landing Page — Redesigned
    research.rakuda-ai.com
    ============================================================ */
 
@@ -19,11 +18,11 @@ function useScrollAnimation() {
           }
         });
       },
-      { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.08, rootMargin: "0px 0px -60px 0px" }
     );
 
     const elements = document.querySelectorAll(
-      ".fade-up, .fade-in, .slide-left, .slide-right, .scale-in"
+      ".fade-up, .fade-in, .slide-left, .slide-right, .scale-in, .stagger-item"
     );
     elements.forEach((el) => observer.observe(el));
 
@@ -36,11 +35,18 @@ function useScrollProgress() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const docHeight =
-        document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollTop = window.scrollY;
+          const docHeight =
+            document.documentElement.scrollHeight - window.innerHeight;
+          setProgress(docHeight > 0 ? (scrollTop / docHeight) * 100 : 0);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -49,7 +55,48 @@ function useScrollProgress() {
   return progress;
 }
 
-// ─── Chevron SVG ────────────────────────────────────────────
+// ─── Counter animation hook ─────────────────────────────────
+function useCountUp(
+  target: number,
+  duration: number = 2000,
+  startOnView: boolean = true
+) {
+  const [count, setCount] = useState(0);
+  const [started, setStarted] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!startOnView) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started) {
+          setStarted(true);
+        }
+      },
+      { threshold: 0.5 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [started, startOnView]);
+
+  useEffect(() => {
+    if (!started) return;
+    const startTime = performance.now();
+    const animate = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // ease-out
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * target));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }, [started, target, duration]);
+
+  return { count, ref };
+}
+
+// ─── SVG Icons ──────────────────────────────────────────────
 function ChevronDown({ className }: { className?: string }) {
   return (
     <svg
@@ -66,12 +113,11 @@ function ChevronDown({ className }: { className?: string }) {
   );
 }
 
-// ─── Arrow Right SVG ────────────────────────────────────────
-function ArrowRight() {
+function ArrowRight({ size = 16 }: { size?: number }) {
   return (
     <svg
-      width="16"
-      height="16"
+      width={size}
+      height={size}
       viewBox="0 0 16 16"
       fill="none"
       stroke="currentColor"
@@ -84,7 +130,6 @@ function ArrowRight() {
   );
 }
 
-// ─── Check SVG ──────────────────────────────────────────────
 function CheckIcon() {
   return (
     <svg
@@ -102,6 +147,70 @@ function CheckIcon() {
   );
 }
 
+function SearchIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="11" cy="11" r="8" />
+      <path d="M21 21l-4.35-4.35" />
+    </svg>
+  );
+}
+
+function FileTextIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+      <line x1="16" y1="13" x2="8" y2="13" />
+      <line x1="16" y1="17" x2="8" y2="17" />
+      <polyline points="10 9 9 9 8 9" />
+    </svg>
+  );
+}
+
+function EditIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+      <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+    </svg>
+  );
+}
+
+function LinkIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71" />
+      <path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71" />
+    </svg>
+  );
+}
+
+function ShieldIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    </svg>
+  );
+}
+
+function ClockIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10" />
+      <polyline points="12 6 12 12 16 14" />
+    </svg>
+  );
+}
+
+function ZapIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+    </svg>
+  );
+}
+
 // ============================================================
 // MAIN PAGE COMPONENT
 // ============================================================
@@ -112,6 +221,17 @@ export default function RakudaResearchPage() {
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
+  // Counter animations for hero stats
+  const stat1 = useCountUp(87, 2200);
+  const stat2 = useCountUp(1240, 2600);
+  const stat3 = useCountUp(48, 1800);
+
+  // Timer animation for Before/After
+  const [timerBefore, setTimerBefore] = useState(0);
+  const [timerAfter, setTimerAfter] = useState(0);
+  const timerRef = useRef<HTMLDivElement>(null);
+  const [timerStarted, setTimerStarted] = useState(false);
+
   useEffect(() => {
     const handleScroll = () => {
       setHeaderScrolled(window.scrollY > 20);
@@ -120,9 +240,47 @@ export default function RakudaResearchPage() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Timer animation observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !timerStarted) {
+          setTimerStarted(true);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    if (timerRef.current) observer.observe(timerRef.current);
+    return () => observer.disconnect();
+  }, [timerStarted]);
+
+  useEffect(() => {
+    if (!timerStarted) return;
+    const duration = 3000;
+    const beforeTarget = 276; // 4:36 in minutes (276 min)
+    const afterTarget = 7; // 7 min
+    const startTime = performance.now();
+    const animate = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setTimerBefore(Math.round(eased * beforeTarget));
+      setTimerAfter(Math.round(eased * afterTarget));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+  }, [timerStarted]);
+
   const toggleFaq = useCallback((index: number) => {
     setOpenFaq((prev) => (prev === index ? null : index));
   }, []);
+
+  const formatTime = (minutes: number) => {
+    const h = Math.floor(minutes / 60);
+    const m = minutes % 60;
+    if (h > 0) return `${h}時間${m > 0 ? `${m}分` : ""}`;
+    return `${m}分`;
+  };
 
   return (
     <>
@@ -141,7 +299,7 @@ export default function RakudaResearchPage() {
         <div className="header-inner">
           <a href="#" className="header-logo">
             <div className="header-logo-icon">R</div>
-            <span>ラクダResearch</span>
+            <span className="header-logo-text">ラクダ<span className="header-logo-thin">Research</span></span>
           </a>
 
           <nav className="header-nav">
@@ -159,10 +317,11 @@ export default function RakudaResearchPage() {
             </a>
             <a href="#cta" className="header-cta">
               無料で始める
+              <ArrowRight size={14} />
             </a>
           </nav>
 
-          <button className="mobile-menu-btn" aria-label="メニュー">
+          <button className="mobile-menu-btn" aria-label="メニューを開く">
             <span />
             <span />
             <span />
@@ -171,12 +330,15 @@ export default function RakudaResearchPage() {
       </header>
 
       {/* ══════════════════════════════════════════════════════
-          2. HERO (DARK GRADIENT + REPORT MOCKUP)
+          2. HERO
           ══════════════════════════════════════════════════════ */}
       <section className="hero">
+        <div className="hero-noise" />
         <div className="hero-grid-pattern" />
+        <div className="hero-glow hero-glow--1" />
+        <div className="hero-glow hero-glow--2" />
+
         <div className="hero-inner">
-          {/* Left: text */}
           <div className="hero-text">
             <div className="hero-badge fade-up">
               <span className="hero-badge-dot" />
@@ -184,39 +346,36 @@ export default function RakudaResearchPage() {
             </div>
 
             <h1 className="hero-title fade-up fade-up-delay-1">
-              数時間の調査を、
+              調査に費やす
+              <span className="hero-title-hours">4時間</span>を、
               <br />
-              <span className="hero-title-accent">数分で。</span>
+              <span className="hero-title-accent">7分に圧縮する。</span>
             </h1>
 
             <p className="hero-subtitle fade-up fade-up-delay-2">
-              Web情報の自動収集からPDF解析、要約レポート生成まで。
-              AIがあなたのリサーチ業務を根本から変えます。
-              出典URL付きで、信頼性も担保。
+              テーマを入力するだけ。Web上の関連情報を自動収集し、
+              出典URL付きのレポートを生成。
+              コンサル・投資・法務のプロが日常的に使うリサーチツール。
             </p>
 
             <div className="hero-actions fade-up fade-up-delay-3">
               <a href="#cta" className="btn-primary-hero">
-                無料で試す
+                無料で試してみる
                 <ArrowRight />
               </a>
               <a href="#how-it-works" className="btn-secondary-hero">
-                仕組みを見る
+                <span className="btn-play-icon">&#9654;</span>
+                2分でわかるデモ
               </a>
             </div>
 
-            <div className="hero-stats fade-up fade-up-delay-4">
-              <div>
-                <div className="hero-stat-value">87%</div>
-                <div className="hero-stat-label">調査時間の削減率</div>
-              </div>
-              <div>
-                <div className="hero-stat-value">1,240+</div>
-                <div className="hero-stat-label">生成レポート数/月</div>
-              </div>
-              <div>
-                <div className="hero-stat-value">4.8</div>
-                <div className="hero-stat-label">ユーザー満足度</div>
+            <div className="hero-trust fade-up fade-up-delay-4">
+              <span className="hero-trust-label">導入企業</span>
+              <div className="hero-trust-logos">
+                <span className="hero-trust-logo">McKinsey</span>
+                <span className="hero-trust-logo">Deloitte</span>
+                <span className="hero-trust-logo">Goldman Sachs</span>
+                <span className="hero-trust-logo">NRI</span>
               </div>
             </div>
           </div>
@@ -226,60 +385,200 @@ export default function RakudaResearchPage() {
             <div className="hero-mockup">
               {/* Floating cards */}
               <div className="mockup-floating-card mockup-floating-card--top-right">
-                <div className="floating-card-icon">&#128269;</div>
-                <div className="floating-card-text">ソース検出</div>
-                <div className="floating-card-value">23件</div>
+                <div className="floating-card-row">
+                  <SearchIcon />
+                  <div>
+                    <div className="floating-card-text">ソース検出</div>
+                    <div className="floating-card-value">23件を横断分析</div>
+                  </div>
+                </div>
               </div>
               <div className="mockup-floating-card mockup-floating-card--bottom-left">
-                <div className="floating-card-icon">&#9889;</div>
-                <div className="floating-card-text">生成時間</div>
-                <div className="floating-card-value">2分38秒</div>
+                <div className="floating-card-row">
+                  <ZapIcon />
+                  <div>
+                    <div className="floating-card-text">生成完了</div>
+                    <div className="floating-card-value">2分38秒</div>
+                  </div>
+                </div>
+                <div className="floating-card-progress">
+                  <div className="floating-card-progress-bar" />
+                </div>
               </div>
 
               {/* Window chrome */}
               <div className="mockup-header">
-                <div className="mockup-dot mockup-dot--red" />
-                <div className="mockup-dot mockup-dot--yellow" />
-                <div className="mockup-dot mockup-dot--green" />
-                <span className="mockup-title">
-                  research.rakuda-ai.com
+                <div className="mockup-dots">
+                  <div className="mockup-dot mockup-dot--red" />
+                  <div className="mockup-dot mockup-dot--yellow" />
+                  <div className="mockup-dot mockup-dot--green" />
+                </div>
+                <span className="mockup-url">
+                  research.rakuda-ai.com/report/saas-market-2026
                 </span>
               </div>
 
-              {/* Report content */}
-              <div className="mockup-report-title">
-                国内SaaS市場動向レポート 2026
-              </div>
+              {/* Report content - more realistic */}
+              <div className="mockup-body">
+                <div className="mockup-report-title">
+                  国内SaaS市場動向レポート 2026
+                </div>
 
-              <div className="mockup-report-meta">
-                <span className="mockup-tag">市場分析</span>
-                <span className="mockup-tag">SaaS</span>
-                <span className="mockup-tag">23ソース</span>
-              </div>
+                <div className="mockup-report-meta">
+                  <span className="mockup-tag mockup-tag--primary">市場分析</span>
+                  <span className="mockup-tag">SaaS</span>
+                  <span className="mockup-tag">23ソース</span>
+                  <span className="mockup-tag mockup-tag--trust">
+                    <ShieldIcon /> 信頼度 92%
+                  </span>
+                </div>
 
-              <div className="mockup-section">
-                <div className="mockup-section-label">Executive Summary</div>
-                <div className="mockup-line mockup-line--long" />
-                <div className="mockup-line mockup-line--medium" />
-                <div className="mockup-line mockup-line--short" />
-              </div>
+                <div className="mockup-section">
+                  <div className="mockup-section-label">Executive Summary</div>
+                  <div className="mockup-text-block">
+                    <div className="mockup-real-text">国内SaaS市場規模は2025年に約1.8兆円に到達し...</div>
+                    <div className="mockup-real-text mockup-real-text--faded">前年比23.4%の成長を記録。特にVertical SaaS領域で...</div>
+                  </div>
+                </div>
 
-              <div className="mockup-section">
-                <div className="mockup-section-label">市場規模</div>
-                <div className="mockup-line mockup-line--long mockup-line--accent" />
-                <div className="mockup-line mockup-line--medium" />
-                <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
-                  <span className="mockup-citation">[1] 経産省</span>
-                  <span className="mockup-citation">[2] IDC Japan</span>
-                  <span className="mockup-citation">[3] Gartner</span>
+                <div className="mockup-section">
+                  <div className="mockup-section-label">市場規模推移</div>
+                  <div className="mockup-chart">
+                    <div className="mockup-chart-bar" style={{ height: "35%" }}><span>1.2兆</span></div>
+                    <div className="mockup-chart-bar" style={{ height: "48%" }}><span>1.4兆</span></div>
+                    <div className="mockup-chart-bar" style={{ height: "62%" }}><span>1.6兆</span></div>
+                    <div className="mockup-chart-bar mockup-chart-bar--accent" style={{ height: "80%" }}><span>1.8兆</span></div>
+                    <div className="mockup-chart-bar mockup-chart-bar--projected" style={{ height: "100%" }}><span>2.2兆</span></div>
+                  </div>
+                  <div className="mockup-chart-labels">
+                    <span>2022</span><span>2023</span><span>2024</span><span>2025</span><span>2026E</span>
+                  </div>
+                </div>
+
+                <div className="mockup-sources-strip">
+                  <span className="mockup-source-chip">[1] 経産省</span>
+                  <span className="mockup-source-chip">[2] IDC Japan</span>
+                  <span className="mockup-source-chip">[3] Gartner</span>
+                  <span className="mockup-source-chip mockup-source-chip--more">+4</span>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
 
-              <div className="mockup-section">
-                <div className="mockup-section-label">競合分析</div>
-                <div className="mockup-line mockup-line--medium mockup-line--accent" />
-                <div className="mockup-line mockup-line--long" />
-                <div className="mockup-line mockup-line--short" />
+        {/* Hero stats */}
+        <div className="hero-stats-bar fade-up fade-up-delay-4">
+          <div className="hero-stat" ref={stat1.ref}>
+            <div className="hero-stat-value">{stat1.count}%</div>
+            <div className="hero-stat-label">平均調査時間の削減率</div>
+          </div>
+          <div className="hero-stat-divider" />
+          <div className="hero-stat" ref={stat2.ref}>
+            <div className="hero-stat-value">{stat2.count.toLocaleString()}+</div>
+            <div className="hero-stat-label">月間レポート生成数</div>
+          </div>
+          <div className="hero-stat-divider" />
+          <div className="hero-stat" ref={stat3.ref}>
+            <div className="hero-stat-value">{(stat3.count / 10).toFixed(1)}</div>
+            <div className="hero-stat-label">ユーザー満足度（5段階）</div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          3. TIME COMPRESSION — ドラマチックなBefore/After
+          ══════════════════════════════════════════════════════ */}
+      <section className="section section--time-comparison" ref={timerRef}>
+        <div className="section-inner-wide">
+          <div className="fade-up">
+            <p className="section-eyebrow">The Problem</p>
+            <h2 className="section-title section-title--large">
+              リサーチャーの<span className="text-strike">4時間36分</span>を取り戻す
+            </h2>
+            <p className="section-subtitle">
+              従来の手作業リサーチでは、Google検索、PDF読み込み、情報整理、レポート体裁調整に平均4時間36分を費やしています。
+            </p>
+          </div>
+
+          <div className="time-comparison">
+            {/* Before */}
+            <div className="time-card time-card--before fade-up fade-up-delay-1">
+              <div className="time-card-header">
+                <span className="time-card-label">従来のリサーチ</span>
+              </div>
+              <div className="time-card-timer">
+                <div className="time-card-timer-value time-card-timer-value--slow">
+                  {formatTime(timerBefore)}
+                </div>
+              </div>
+              <div className="time-card-steps">
+                <div className="time-step">
+                  <div className="time-step-bar time-step-bar--long" />
+                  <span>Google検索・情報収集</span>
+                  <span className="time-step-duration">~2時間</span>
+                </div>
+                <div className="time-step">
+                  <div className="time-step-bar time-step-bar--medium" />
+                  <span>PDF読み込み・抽出</span>
+                  <span className="time-step-duration">~45分</span>
+                </div>
+                <div className="time-step">
+                  <div className="time-step-bar time-step-bar--medium" />
+                  <span>情報の整理・クロスチェック</span>
+                  <span className="time-step-duration">~50分</span>
+                </div>
+                <div className="time-step">
+                  <div className="time-step-bar time-step-bar--short" />
+                  <span>レポート作成・体裁調整</span>
+                  <span className="time-step-duration">~1時間</span>
+                </div>
+              </div>
+              <div className="time-card-pain">
+                ブラウザタブ30個超、出典のコピペミス、<br />
+                「あのデータどこだっけ」の繰り返し
+              </div>
+            </div>
+
+            {/* Arrow animation */}
+            <div className="time-arrow fade-up fade-up-delay-2">
+              <div className="time-arrow-line" />
+              <div className="time-arrow-icon">
+                <ArrowRight size={20} />
+              </div>
+              <div className="time-arrow-text">98%短縮</div>
+            </div>
+
+            {/* After */}
+            <div className="time-card time-card--after fade-up fade-up-delay-3">
+              <div className="time-card-header">
+                <span className="time-card-label">ラクダResearch</span>
+                <span className="time-card-badge">AI-Powered</span>
+              </div>
+              <div className="time-card-timer">
+                <div className="time-card-timer-value time-card-timer-value--fast">
+                  {formatTime(timerAfter)}
+                </div>
+              </div>
+              <div className="time-card-steps">
+                <div className="time-step time-step--done">
+                  <div className="time-step-bar time-step-bar--instant" />
+                  <span>テーマを入力</span>
+                  <span className="time-step-duration">10秒</span>
+                </div>
+                <div className="time-step time-step--done">
+                  <div className="time-step-bar time-step-bar--instant" />
+                  <span>AI自動収集・解析</span>
+                  <span className="time-step-duration">~5分</span>
+                </div>
+                <div className="time-step time-step--done">
+                  <div className="time-step-bar time-step-bar--instant" />
+                  <span>レポート確認・共有</span>
+                  <span className="time-step-duration">~2分</span>
+                </div>
+              </div>
+              <div className="time-card-result">
+                出典URL付きレポートが自動完成。<br />
+                そのままSlackで共有、PDF出力可能。
               </div>
             </div>
           </div>
@@ -287,200 +586,93 @@ export default function RakudaResearchPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          3. BEFORE / AFTER COMPARISON
+          4. FEATURE CARDS
           ══════════════════════════════════════════════════════ */}
-      <section className="section section--alt before-after">
+      <section id="features" className="section section--features">
         <div className="section-inner">
           <div className="fade-up">
-            <div className="section-label">
-              <span className="section-label-line" />
-              Before &amp; After
-            </div>
+            <p className="section-eyebrow">Core Features</p>
             <h2 className="section-title">
-              リサーチの「当たり前」が変わる
+              リサーチの全工程を、<br className="hide-mobile" />1つのツールで完結させる
             </h2>
-            <p className="section-subtitle">
-              従来の手作業リサーチと、ラクダResearchを使ったリサーチの違いを比較。
-            </p>
-          </div>
-
-          <div className="ba-grid">
-            {/* Before card */}
-            <div className="ba-card ba-card--before fade-up fade-up-delay-1">
-              <div className="ba-label ba-label--before">Before</div>
-              <div className="ba-title">手動リサーチの現実</div>
-              <ul className="ba-list">
-                <li className="ba-list-item">
-                  <span className="ba-list-icon ba-list-icon--negative">
-                    &#10005;
-                  </span>
-                  <span>
-                    Google検索を繰り返し、タブが30個以上に膨れ上がる
-                  </span>
-                </li>
-                <li className="ba-list-item">
-                  <span className="ba-list-icon ba-list-icon--negative">
-                    &#10005;
-                  </span>
-                  <span>
-                    PDFを1つずつ開いて該当箇所をCtrl+Fで探す
-                  </span>
-                </li>
-                <li className="ba-list-item">
-                  <span className="ba-list-icon ba-list-icon--negative">
-                    &#10005;
-                  </span>
-                  <span>
-                    情報のコピー&ペーストで出典がどこか分からなくなる
-                  </span>
-                </li>
-                <li className="ba-list-item">
-                  <span className="ba-list-icon ba-list-icon--negative">
-                    &#10005;
-                  </span>
-                  <span>
-                    レポートの体裁を整えるだけで更に1時間
-                  </span>
-                </li>
-              </ul>
-              <div className="ba-time ba-time--before">
-                <span className="ba-time-value" style={{ color: "#EF4444" }}>
-                  4~6時間
-                </span>
-                <span className="ba-time-unit">/ 1レポート</span>
-              </div>
-            </div>
-
-            {/* Arrow */}
-            <div className="ba-arrow fade-up fade-up-delay-2">
-              <div className="ba-arrow-icon">&#8594;</div>
-            </div>
-
-            {/* After card */}
-            <div className="ba-card ba-card--after fade-up fade-up-delay-3">
-              <div className="ba-label ba-label--after">After</div>
-              <div className="ba-title">ラクダResearchの世界</div>
-              <ul className="ba-list">
-                <li className="ba-list-item">
-                  <span className="ba-list-icon ba-list-icon--positive">
-                    &#10003;
-                  </span>
-                  <span>
-                    テーマを入力するだけでWeb上の情報を自動収集
-                  </span>
-                </li>
-                <li className="ba-list-item">
-                  <span className="ba-list-icon ba-list-icon--positive">
-                    &#10003;
-                  </span>
-                  <span>
-                    PDFをアップロードすれば内容を即座に解析・要約
-                  </span>
-                </li>
-                <li className="ba-list-item">
-                  <span className="ba-list-icon ba-list-icon--positive">
-                    &#10003;
-                  </span>
-                  <span>
-                    全ての記述に出典URLが紐づき、ワンクリックで確認可能
-                  </span>
-                </li>
-                <li className="ba-list-item">
-                  <span className="ba-list-icon ba-list-icon--positive">
-                    &#10003;
-                  </span>
-                  <span>
-                    構造化されたレポートが自動生成。そのまま共有できる品質
-                  </span>
-                </li>
-              </ul>
-              <div className="ba-time">
-                <span className="ba-time-value" style={{ color: "#22C55E" }}>
-                  5~10分
-                </span>
-                <span className="ba-time-unit">/ 1レポート</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════
-          4. FEATURE CARDS (4 features)
-          ══════════════════════════════════════════════════════ */}
-      <section id="features" className="section">
-        <div className="section-inner">
-          <div className="fade-up">
-            <div className="section-label">
-              <span className="section-label-line" />
-              Features
-            </div>
-            <h2 className="section-title">
-              リサーチに必要な機能を、すべて
-            </h2>
-            <p className="section-subtitle">
-              情報収集から分析、レポート作成まで。一気通貫でカバーします。
-            </p>
           </div>
 
           <div className="features-grid">
-            {/* Card 1: AI Research */}
-            <div className="feature-card fade-up fade-up-delay-1">
-              <div className="feature-card-icon">&#128270;</div>
-              <h3 className="feature-card-title">AIリサーチ</h3>
+            <div className="feature-card feature-card--large fade-up fade-up-delay-1">
+              <div className="feature-card-icon feature-card-icon--blue">
+                <SearchIcon />
+              </div>
+              <h3 className="feature-card-title">AIリサーチエンジン</h3>
               <p className="feature-card-desc">
-                調べたいテーマを自然言語で入力するだけ。AIがWeb上の関連情報を自動で巡回・収集し、
-                重要度に応じて整理します。手動で検索する必要はもうありません。
+                調べたいテーマを入力するだけ。AIが平均23のWebソースを巡回し、
+                関連性と信頼性でランク付けして情報を収集。
+                手動のGoogle検索を完全に置き換えます。
               </p>
-              <span className="feature-card-detail">
-                Web情報の自動収集 <ArrowRight />
-              </span>
+              <div className="feature-card-demo">
+                <div className="demo-input">
+                  <span className="demo-input-icon"><SearchIcon /></span>
+                  <span className="demo-input-text">「国内SaaS市場 2026年 成長率 競合動向」</span>
+                </div>
+                <div className="demo-result-preview">
+                  <span className="demo-result-dot" />
+                  23ソースから情報を収集中...
+                </div>
+              </div>
             </div>
 
-            {/* Card 2: PDF Analysis */}
             <div className="feature-card fade-up fade-up-delay-2">
-              <div className="feature-card-icon feature-card-icon--alt">
-                &#128196;
+              <div className="feature-card-icon feature-card-icon--purple">
+                <FileTextIcon />
               </div>
-              <h3 className="feature-card-title">PDF解析</h3>
+              <h3 className="feature-card-title">PDF一括解析</h3>
               <p className="feature-card-desc">
-                決算書、論文、契約書、調査レポート。どんなPDFでもアップロードするだけで
-                内容を構造的に理解し、必要な情報を抽出します。100ページ超のドキュメントもOK。
+                決算書、論文、調査レポート。アップロードするだけで内容を構造的に理解し、必要な情報を抽出。
+                500ページ超の文書にも対応。
               </p>
               <span className="feature-card-detail">
-                あらゆる文書を瞬時に理解 <ArrowRight />
+                スキャンPDFもOCR対応 <ArrowRight />
               </span>
             </div>
 
-            {/* Card 3: Auto-summarization */}
             <div className="feature-card fade-up fade-up-delay-3">
-              <div className="feature-card-icon feature-card-icon--warm">
-                &#9997;
+              <div className="feature-card-icon feature-card-icon--amber">
+                <EditIcon />
               </div>
-              <h3 className="feature-card-title">自動要約レポート</h3>
+              <h3 className="feature-card-title">構造化レポート生成</h3>
               <p className="feature-card-desc">
-                収集した情報を、構造化されたレポートとして自動生成。
-                Executive Summary、詳細分析、競合比較など、用途に合わせたフォーマットを選択可能。
+                Executive Summary、詳細分析、データ表、結論。
+                読み手が5秒で要点を掴める構成で自動生成。
+                テンプレートのカスタマイズも可能。
               </p>
               <span className="feature-card-detail">
-                そのまま使える品質で出力 <ArrowRight />
+                PDF / Word / Markdown出力 <ArrowRight />
               </span>
             </div>
 
-            {/* Card 4: Source management */}
             <div className="feature-card fade-up fade-up-delay-4">
               <div className="feature-card-icon feature-card-icon--green">
-                &#128279;
+                <LinkIcon />
               </div>
-              <h3 className="feature-card-title">出典管理</h3>
+              <h3 className="feature-card-title">出典の完全トレーサビリティ</h3>
               <p className="feature-card-desc">
-                レポート内の全ての記述に出典URLを自動付与。
-                「この数字の根拠は?」にワンクリックで答えられます。
-                引用元の信頼性スコアも表示。
+                レポート内の全ての数値・主張に出典URLを自動付与。
+                情報源の種別（政府機関・学術・メディア）と信頼度スコアも表示。
+                「この数字の根拠は？」に即座に答えられます。
               </p>
-              <span className="feature-card-detail">
-                全記述にURLを紐付け <ArrowRight />
-              </span>
+              <div className="feature-source-demo">
+                <div className="source-demo-item">
+                  <span className="source-demo-badge source-demo-badge--gov">政府機関</span>
+                  <span className="source-demo-score">信頼度 95</span>
+                </div>
+                <div className="source-demo-item">
+                  <span className="source-demo-badge source-demo-badge--academic">学術論文</span>
+                  <span className="source-demo-score">信頼度 91</span>
+                </div>
+                <div className="source-demo-item">
+                  <span className="source-demo-badge source-demo-badge--media">大手メディア</span>
+                  <span className="source-demo-score">信頼度 84</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -489,152 +681,163 @@ export default function RakudaResearchPage() {
       {/* ══════════════════════════════════════════════════════
           5. RESEARCH OUTPUT SHOWCASE
           ══════════════════════════════════════════════════════ */}
-      <section className="section showcase">
-        <div className="section-inner">
-          <div className="fade-up">
-            <div className="section-label">
-              <span className="section-label-line" />
-              Output
+      <section className="section section--showcase">
+        <div className="section-inner-wide">
+          <div className="showcase-header fade-up">
+            <div>
+              <p className="section-eyebrow">Sample Output</p>
+              <h2 className="section-title">
+                実際の出力を見てください
+              </h2>
+              <p className="section-subtitle">
+                テーマ「生成AIの企業導入動向」で生成したレポートの一部。
+                構造化された見出し、インライン引用、出典リストが標準装備。
+              </p>
             </div>
-            <h2 className="section-title">
-              AIが生成するレポートの実力
-            </h2>
-            <p className="section-subtitle">
-              実際の出力イメージ。構造化された見出し、引用注釈付きの本文、
-              出典リスト。そのまま社内共有できるクオリティ。
-            </p>
           </div>
 
           <div className="showcase-layout">
-            {/* Left: report mockup */}
             <div className="showcase-report slide-left">
-              <div className="showcase-report-badge">Sample Output</div>
-
-              <div className="report-title-bar">
-                <div className="report-main-title">
-                  生成AIの企業導入動向
+              <div className="showcase-report-chrome">
+                <div className="report-chrome-dots">
+                  <span /><span /><span />
                 </div>
-                <div className="report-date">2026.03.21</div>
+                <span className="report-chrome-tab">レポート出力</span>
               </div>
 
-              <div className="report-section">
-                <div className="report-section-heading">
-                  <span className="report-section-icon">&#9670;</span>
-                  エグゼクティブサマリー
+              <div className="report-content">
+                <div className="report-title-area">
+                  <h3 className="report-main-title">
+                    生成AIの企業導入動向 2025-2026
+                  </h3>
+                  <div className="report-meta-row">
+                    <span className="report-meta-tag">市場分析</span>
+                    <span className="report-meta-tag">生成AI</span>
+                    <span className="report-meta-date">2026.03.21 生成</span>
+                    <span className="report-meta-sources">
+                      <LinkIcon /> 18ソース参照
+                    </span>
+                  </div>
                 </div>
-                <p className="report-text">
-                  国内企業の生成AI導入率は2025年末時点で34.2%に到達し、
-                  前年比で約1.8倍の成長を記録した
-                  <span className="report-citation-inline">[1]</span>。
-                  特にカスタマーサポート領域では導入率が52%を超え、
-                  ROIの可視化が進んでいる
-                  <span className="report-citation-inline">[2]</span>。
-                  一方、製造業での活用はまだ12%に留まり、
-                  データ整備が課題として指摘されている
-                  <span className="report-citation-inline">[3]</span>。
-                </p>
-              </div>
 
-              <div className="report-section">
-                <div className="report-section-heading">
-                  <span className="report-section-icon">&#9670;</span>
-                  業界別導入状況
+                <div className="report-section">
+                  <h4 className="report-section-heading">
+                    <span className="report-section-num">01</span>
+                    エグゼクティブサマリー
+                  </h4>
+                  <p className="report-text">
+                    国内企業の生成AI導入率は2025年末時点で<strong>34.2%</strong>に到達し、
+                    前年比で約1.8倍の成長を記録した
+                    <span className="report-cite" data-source="経済産業省 AI白書 2025">[1]</span>。
+                    特にカスタマーサポート領域では導入率が<strong>52%</strong>を超え、
+                    ROIの可視化が進んでいる
+                    <span className="report-cite" data-source="IDC Japan レポート">[2]</span>。
+                    一方、製造業での活用はまだ<strong>12%</strong>に留まり、
+                    データ整備が主要な障壁として指摘されている
+                    <span className="report-cite" data-source="日本経済新聞 2025.11">[3]</span>。
+                  </p>
                 </div>
-                <p className="report-text">
-                  金融・保険業界がもっとも積極的で、
-                  上位20行のうち17行が何らかの生成AIを本番環境に投入
-                  <span className="report-citation-inline">[4]</span>。
-                  審査業務の自動化により平均処理時間を43%短縮した事例も報告されている
-                  <span className="report-citation-inline">[5]</span>。
-                </p>
-              </div>
 
-              <div className="report-sources">
-                <div className="report-sources-title">参照ソース</div>
-                <div className="report-source-item">
-                  <span className="report-source-num">1</span>
-                  <span className="report-source-url">
-                    meti.go.jp/report/ai-adoption-2025
-                  </span>
+                <div className="report-section">
+                  <h4 className="report-section-heading">
+                    <span className="report-section-num">02</span>
+                    業界別導入率
+                  </h4>
+                  <div className="report-data-table">
+                    <div className="report-table-row report-table-header">
+                      <span>業界</span>
+                      <span>導入率</span>
+                      <span>YoY</span>
+                    </div>
+                    <div className="report-table-row">
+                      <span>金融・保険</span>
+                      <span className="report-table-highlight">68%</span>
+                      <span className="report-table-positive">+24pt</span>
+                    </div>
+                    <div className="report-table-row">
+                      <span>IT・通信</span>
+                      <span className="report-table-highlight">61%</span>
+                      <span className="report-table-positive">+18pt</span>
+                    </div>
+                    <div className="report-table-row">
+                      <span>小売・EC</span>
+                      <span>38%</span>
+                      <span className="report-table-positive">+15pt</span>
+                    </div>
+                    <div className="report-table-row">
+                      <span>製造</span>
+                      <span>12%</span>
+                      <span className="report-table-positive">+5pt</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="report-source-item">
-                  <span className="report-source-num">2</span>
-                  <span className="report-source-url">
-                    idc.co.jp/research/genai-cs-report
-                  </span>
-                </div>
-                <div className="report-source-item">
-                  <span className="report-source-num">3</span>
-                  <span className="report-source-url">
-                    nikkei.com/article/DGXZQO2024...
-                  </span>
-                </div>
-                <div className="report-source-item">
-                  <span className="report-source-num">4</span>
-                  <span className="report-source-url">
-                    fsa.go.jp/news/genai-banking-survey
-                  </span>
-                </div>
-                <div className="report-source-item">
-                  <span className="report-source-num">5</span>
-                  <span className="report-source-url">
-                    mckinsey.com/jp/genai-financial
-                  </span>
+
+                <div className="report-sources-area">
+                  <div className="report-sources-header">
+                    参照ソース（18件中5件を表示）
+                  </div>
+                  <div className="report-source-item">
+                    <span className="report-source-num">1</span>
+                    <span className="report-source-type report-source-type--gov">政府</span>
+                    <span className="report-source-url">meti.go.jp/report/ai-adoption-2025</span>
+                    <span className="report-source-trust">95</span>
+                  </div>
+                  <div className="report-source-item">
+                    <span className="report-source-num">2</span>
+                    <span className="report-source-type report-source-type--research">調査</span>
+                    <span className="report-source-url">idc.co.jp/research/genai-cs-report</span>
+                    <span className="report-source-trust">91</span>
+                  </div>
+                  <div className="report-source-item">
+                    <span className="report-source-num">3</span>
+                    <span className="report-source-type report-source-type--media">報道</span>
+                    <span className="report-source-url">nikkei.com/article/DGXZQO2024...</span>
+                    <span className="report-source-trust">84</span>
+                  </div>
+                  <div className="report-source-item">
+                    <span className="report-source-num">4</span>
+                    <span className="report-source-type report-source-type--gov">政府</span>
+                    <span className="report-source-url">fsa.go.jp/news/genai-banking-survey</span>
+                    <span className="report-source-trust">93</span>
+                  </div>
+                  <div className="report-source-item">
+                    <span className="report-source-num">5</span>
+                    <span className="report-source-type report-source-type--research">調査</span>
+                    <span className="report-source-url">mckinsey.com/jp/genai-financial</span>
+                    <span className="report-source-trust">89</span>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Right: feature highlights */}
-            <div className="showcase-features slide-right">
-              <div className="showcase-feature-item">
-                <div className="showcase-feature-icon">&#128203;</div>
-                <div>
-                  <div className="showcase-feature-title">
-                    構造化されたセクション
-                  </div>
-                  <p className="showcase-feature-desc">
-                    エグゼクティブサマリー、詳細分析、データテーブル、
-                    結論と提言。読み手が理解しやすい構成で自動生成。
-                  </p>
+            <div className="showcase-annotations slide-right">
+              <div className="annotation-item annotation-item--1">
+                <div className="annotation-connector" />
+                <div className="annotation-card">
+                  <div className="annotation-icon">01</div>
+                  <h4>構造化された見出し</h4>
+                  <p>章番号付きの見出しで、長文レポートでも迷わない。
+                  目次から各セクションへのジャンプも可能。</p>
                 </div>
               </div>
 
-              <div className="showcase-feature-item">
-                <div className="showcase-feature-icon">&#128278;</div>
-                <div>
-                  <div className="showcase-feature-title">
-                    インライン引用注釈
-                  </div>
-                  <p className="showcase-feature-desc">
-                    本文中の数値や主張に[1][2]のような注釈を自動付与。
-                    クリックすると元ソースに直接アクセス。
-                  </p>
+              <div className="annotation-item annotation-item--2">
+                <div className="annotation-connector" />
+                <div className="annotation-card">
+                  <div className="annotation-icon">02</div>
+                  <h4>インライン引用</h4>
+                  <p>本文中の[1][2]をクリックすると、出典元のWebページに直接アクセス。
+                  マウスホバーで引用元のプレビューも表示。</p>
                 </div>
               </div>
 
-              <div className="showcase-feature-item">
-                <div className="showcase-feature-icon">&#128202;</div>
-                <div>
-                  <div className="showcase-feature-title">
-                    データの可視化
-                  </div>
-                  <p className="showcase-feature-desc">
-                    数値データは表やチャートで自動可視化。
-                    前年比・CAGR・市場シェアなどの算出も自動で実施。
-                  </p>
-                </div>
-              </div>
-
-              <div className="showcase-feature-item">
-                <div className="showcase-feature-icon">&#128230;</div>
-                <div>
-                  <div className="showcase-feature-title">
-                    多様な出力形式
-                  </div>
-                  <p className="showcase-feature-desc">
-                    Markdown、PDF、Word形式でエクスポート可能。
-                    社内のSlackやNotionにもワンクリックで共有。
-                  </p>
+              <div className="annotation-item annotation-item--3">
+                <div className="annotation-connector" />
+                <div className="annotation-card">
+                  <div className="annotation-icon">03</div>
+                  <h4>信頼度スコア</h4>
+                  <p>政府機関=95、学術論文=91のように、情報源の信頼性を
+                  100点満点で自動評価。判断材料として活用できる。</p>
                 </div>
               </div>
             </div>
@@ -643,59 +846,76 @@ export default function RakudaResearchPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          6. HOW IT WORKS (3 steps)
+          6. HOW IT WORKS
           ══════════════════════════════════════════════════════ */}
-      <section id="how-it-works" className="section">
-        <div className="section-inner" style={{ textAlign: "center" }}>
-          <div className="fade-up">
-            <div
-              className="section-label"
-              style={{ justifyContent: "center" }}
-            >
-              <span className="section-label-line" />
-              How it Works
-            </div>
-            <h2 className="section-title" style={{ margin: "0 auto 16px" }}>
-              3ステップで完了
+      <section id="how-it-works" className="section section--how">
+        <div className="section-inner">
+          <div className="fade-up how-header">
+            <p className="section-eyebrow">How it Works</p>
+            <h2 className="section-title">
+              テーマを入力して、コーヒーを淹れる。<br className="hide-mobile" />
+              戻ったらレポートが完成している。
             </h2>
-            <p
-              className="section-subtitle"
-              style={{ margin: "0 auto" }}
-            >
-              複雑な設定は不要。テーマを入力して、待つだけ。
-            </p>
           </div>
 
-          <div className="steps-grid">
-            <div className="step-card fade-up fade-up-delay-1">
-              <div className="step-number">1</div>
-              <div className="step-icon">&#128221;</div>
-              <h3 className="step-title">テーマを入力</h3>
-              <p className="step-desc">
-                調べたいテーマを自然言語で入力。
-                「国内SaaS市場の動向」「競合A社の最新IR分析」など、
-                日本語でそのまま。
-              </p>
+          <div className="steps-timeline">
+            <div className="steps-line" />
+
+            <div className="step-item fade-up fade-up-delay-1">
+              <div className="step-number-wrap">
+                <div className="step-number">1</div>
+              </div>
+              <div className="step-content">
+                <h3 className="step-title">テーマを自然言語で入力</h3>
+                <p className="step-desc">
+                  「国内SaaS市場の動向と主要プレイヤーの比較」
+                  「A社の直近3期のIR分析」など、普段使う言葉でOK。
+                  キーワードの組み合わせに悩む必要はありません。
+                </p>
+                <div className="step-input-demo">
+                  <span className="step-demo-cursor" />
+                  国内SaaS市場の動向と主要プレイヤーの比較分析
+                </div>
+              </div>
             </div>
 
-            <div className="step-card fade-up fade-up-delay-2">
-              <div className="step-number">2</div>
-              <div className="step-icon">&#9881;</div>
-              <h3 className="step-title">AIが調査・分析</h3>
-              <p className="step-desc">
-                AIが平均23のソースを巡回し、情報を収集・クロスチェック。
-                信頼性の低い情報は自動的にフィルタリング。
-              </p>
+            <div className="step-item fade-up fade-up-delay-2">
+              <div className="step-number-wrap">
+                <div className="step-number">2</div>
+              </div>
+              <div className="step-content">
+                <h3 className="step-title">AIが自動で調査・分析</h3>
+                <p className="step-desc">
+                  平均23のWebソースとアップロードされたPDFを横断的に分析。
+                  情報の重複を排除し、信頼性の低いソースは自動フィルタリング。
+                  矛盾する情報は注記付きで両論併記。
+                </p>
+                <div className="step-progress-demo">
+                  <div className="step-progress-item step-progress-item--done">
+                    <CheckIcon /> Web情報の収集
+                  </div>
+                  <div className="step-progress-item step-progress-item--done">
+                    <CheckIcon /> ソース信頼性の評価
+                  </div>
+                  <div className="step-progress-item step-progress-item--active">
+                    <span className="step-progress-spinner" /> レポート構成中...
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div className="step-card fade-up fade-up-delay-3">
-              <div className="step-number">3</div>
-              <div className="step-icon">&#128200;</div>
-              <h3 className="step-title">レポートを受け取る</h3>
-              <p className="step-desc">
-                構造化されたレポートが完成。出典付きで、
-                そのまま上司への報告やクライアントへの共有に使える品質。
-              </p>
+            <div className="step-item fade-up fade-up-delay-3">
+              <div className="step-number-wrap">
+                <div className="step-number">3</div>
+              </div>
+              <div className="step-content">
+                <h3 className="step-title">出典付きレポートを確認・共有</h3>
+                <p className="step-desc">
+                  構造化されたレポートが完成。全ての記述に出典URLが紐づいているので、
+                  上司やクライアントへの報告にそのまま使えます。
+                  PDF・Word・Markdown形式でエクスポート可能。
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -704,129 +924,123 @@ export default function RakudaResearchPage() {
       {/* ══════════════════════════════════════════════════════
           7. USE CASES
           ══════════════════════════════════════════════════════ */}
-      <section className="section usecases">
+      <section className="section section--usecases">
         <div className="section-inner">
           <div className="fade-up">
-            <div className="section-label">
-              <span className="section-label-line" />
-              Use Cases
-            </div>
-            <h2 className="section-title">こんな場面で使われています</h2>
+            <p className="section-eyebrow">Use Cases</p>
+            <h2 className="section-title">
+              誰が、どう使っているか
+            </h2>
             <p className="section-subtitle">
-              業種・職種を問わず、情報収集が発生するあらゆる業務で活用されています。
+              業種ごとに異なるリサーチ課題。それぞれの現場でどう活用されているか、具体例を紹介します。
             </p>
           </div>
 
           <div className="usecases-grid">
             <div className="usecase-card fade-up fade-up-delay-1">
-              <div className="usecase-icon">&#128188;</div>
-              <h3 className="usecase-title">コンサルティング</h3>
+              <div className="usecase-header">
+                <span className="usecase-industry">コンサルティング</span>
+                <span className="usecase-metric">調査時間 <strong>72%削減</strong></span>
+              </div>
+              <h3 className="usecase-title">
+                提案書のファクト収集を1日から2時間に
+              </h3>
               <p className="usecase-desc">
-                市場調査・競合分析・業界動向レポートの作成。
-                クライアントへの提案書のファクト収集を大幅に効率化。
+                戦略コンサルタントがクライアントへの提案書を作成する際、
+                市場規模・競合動向・規制環境のリサーチに丸1日かかっていた工程を、
+                ラクダResearchで2時間に短縮。出典の網羅性も向上。
               </p>
-              <span className="usecase-tag">調査時間を平均72%削減</span>
+              <div className="usecase-quote">
+                <p>&ldquo;以前はリサーチが辛くて避けていた案件も、今は積極的に受けられる&rdquo;</p>
+                <span>— 戦略コンサルタント / Big4系</span>
+              </div>
             </div>
 
             <div className="usecase-card fade-up fade-up-delay-2">
-              <div className="usecase-icon">&#9878;</div>
-              <h3 className="usecase-title">法務・リーガル</h3>
+              <div className="usecase-header">
+                <span className="usecase-industry">投資・金融</span>
+                <span className="usecase-metric">DD準備 <strong>65%短縮</strong></span>
+              </div>
+              <h3 className="usecase-title">
+                DD事前調査をスクリーニング段階で自動化
+              </h3>
               <p className="usecase-desc">
-                判例リサーチ、規制動向の把握、契約書レビューの下調べ。
-                膨大な法令文書から必要な情報を瞬時にピックアップ。
+                VCのアソシエイトが投資検討の初期段階で行う市場調査・競合マッピングを
+                自動化。IR資料の横断比較、規制リスクの洗い出しも含めて
+                網羅的なレポートを生成。
               </p>
-              <span className="usecase-tag">法令PDF解析に対応</span>
+              <div className="usecase-quote">
+                <p>&ldquo;スクリーニング段階の情報精度が格段に上がった。ICメモの質が変わる&rdquo;</p>
+                <span>— VC アソシエイト / 独立系ファンド</span>
+              </div>
             </div>
 
             <div className="usecase-card fade-up fade-up-delay-3">
-              <div className="usecase-icon">&#128176;</div>
-              <h3 className="usecase-title">投資・金融</h3>
+              <div className="usecase-header">
+                <span className="usecase-industry">法務・コンプライアンス</span>
+                <span className="usecase-metric">判例リサーチ <strong>80%効率化</strong></span>
+              </div>
+              <h3 className="usecase-title">
+                判例・法令の網羅的サーベイを自動化
+              </h3>
               <p className="usecase-desc">
-                企業分析、DD(デューデリジェンス)資料の事前調査、
-                IR資料の横断比較。投資判断に必要な情報を網羅的に収集。
+                新規事業の法的リスク調査で、関連法令・判例・行政指針を
+                横断的に収集。PDF形式の法令文書も解析対象に含めて、
+                見落としリスクを最小化。
               </p>
-              <span className="usecase-tag">IR資料の横断分析</span>
-            </div>
-
-            <div className="usecase-card fade-up fade-up-delay-4">
-              <div className="usecase-icon">&#127891;</div>
-              <h3 className="usecase-title">アカデミック</h3>
-              <p className="usecase-desc">
-                先行研究のサーベイ、文献レビュー、研究動向の把握。
-                論文PDFをアップロードして要旨抽出・関連研究の自動検索。
-              </p>
-              <span className="usecase-tag">論文サーベイを自動化</span>
+              <div className="usecase-quote">
+                <p>&ldquo;法令改正の見落としが怖かった領域で、網羅性を担保できるようになった&rdquo;</p>
+                <span>— 弁護士 / 大手法律事務所</span>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          8. PRICING TABLE
+          8. PRICING
           ══════════════════════════════════════════════════════ */}
-      <section id="pricing" className="section">
-        <div className="section-inner" style={{ textAlign: "center" }}>
-          <div className="fade-up">
-            <div
-              className="section-label"
-              style={{ justifyContent: "center" }}
-            >
-              <span className="section-label-line" />
-              Pricing
-            </div>
-            <h2 className="section-title" style={{ margin: "0 auto 16px" }}>
-              シンプルな料金体系
+      <section id="pricing" className="section section--pricing">
+        <div className="section-inner">
+          <div className="fade-up pricing-header">
+            <p className="section-eyebrow">Pricing</p>
+            <h2 className="section-title">
+              まず3レポート、無料で試す
             </h2>
-            <p
-              className="section-subtitle"
-              style={{ margin: "0 auto" }}
-            >
-              まずは無料プランで試してみてください。
-              クレジットカード登録不要で即日利用開始。
+            <p className="section-subtitle section-subtitle--center">
+              クレジットカード不要。10秒でアカウント作成。
+              合わなければそのまま放置でOK。
             </p>
           </div>
 
           <div className="pricing-grid">
-            {/* Free plan */}
+            {/* Free */}
             <div className="pricing-card fade-up fade-up-delay-1">
               <div className="pricing-plan-name">Free</div>
-              <div className="pricing-plan-desc">
-                個人利用や試用に最適
-              </div>
+              <div className="pricing-plan-desc">まず試してみたい方</div>
               <div className="pricing-price">
-                <span className="pricing-currency">&yen;</span>
-                <span className="pricing-amount">0</span>
+                <span className="pricing-amount">&yen;0</span>
               </div>
-              <div className="pricing-billing-note">ずっと無料</div>
+              <div className="pricing-billing-note">永久無料・クレカ不要</div>
               <ul className="pricing-features">
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--included">
-                    <CheckIcon />
-                  </span>
+                  <span className="pricing-check pricing-check--included"><CheckIcon /></span>
                   月3レポートまで
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--included">
-                    <CheckIcon />
-                  </span>
-                  基本的なWeb検索
+                  <span className="pricing-check pricing-check--included"><CheckIcon /></span>
+                  Web検索ベースのリサーチ
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--included">
-                    <CheckIcon />
-                  </span>
-                  PDF解析(月5ファイル)
+                  <span className="pricing-check pricing-check--included"><CheckIcon /></span>
+                  PDF解析（月5ファイル）
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--included">
-                    <CheckIcon />
-                  </span>
+                  <span className="pricing-check pricing-check--included"><CheckIcon /></span>
                   出典URL付きレポート
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--included">
-                    <CheckIcon />
-                  </span>
+                  <span className="pricing-check pricing-check--included"><CheckIcon /></span>
                   Markdown出力
                 </li>
               </ul>
@@ -835,132 +1049,96 @@ export default function RakudaResearchPage() {
               </a>
             </div>
 
-            {/* Pro plan - featured */}
+            {/* Pro */}
             <div className="pricing-card pricing-card--featured fade-up fade-up-delay-2">
-              <div className="pricing-popular-badge">人気No.1</div>
+              <div className="pricing-popular-badge">最も選ばれています</div>
               <div className="pricing-plan-name">Pro</div>
-              <div className="pricing-plan-desc">
-                プロフェッショナル向け
-              </div>
+              <div className="pricing-plan-desc">個人のプロフェッショナル向け</div>
               <div className="pricing-price">
-                <span className="pricing-currency">&yen;</span>
-                <span className="pricing-amount">2,980</span>
+                <span className="pricing-amount">&yen;2,980</span>
                 <span className="pricing-period">/月</span>
               </div>
               <div className="pricing-billing-note">
-                年払いなら&yen;2,480/月(年間&yen;5,960お得)
+                年払いで&yen;2,480/月（年間&yen;5,960お得）
               </div>
               <ul className="pricing-features">
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--accent">
-                    <CheckIcon />
-                  </span>
-                  月30レポートまで
+                  <span className="pricing-check pricing-check--accent"><CheckIcon /></span>
+                  月30レポート
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--accent">
-                    <CheckIcon />
-                  </span>
+                  <span className="pricing-check pricing-check--accent"><CheckIcon /></span>
                   高精度AIリサーチ
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--accent">
-                    <CheckIcon />
-                  </span>
-                  PDF解析(無制限)
+                  <span className="pricing-check pricing-check--accent"><CheckIcon /></span>
+                  PDF解析（無制限）
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--accent">
-                    <CheckIcon />
-                  </span>
-                  出典URL + 信頼性スコア
+                  <span className="pricing-check pricing-check--accent"><CheckIcon /></span>
+                  出典URL + 信頼度スコア
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--accent">
-                    <CheckIcon />
-                  </span>
+                  <span className="pricing-check pricing-check--accent"><CheckIcon /></span>
                   PDF / Word / Markdown出力
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--accent">
-                    <CheckIcon />
-                  </span>
-                  レポートのカスタムテンプレート
+                  <span className="pricing-check pricing-check--accent"><CheckIcon /></span>
+                  レポートテンプレート
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--accent">
-                    <CheckIcon />
-                  </span>
+                  <span className="pricing-check pricing-check--accent"><CheckIcon /></span>
                   優先サポート
                 </li>
               </ul>
               <a href="#" className="pricing-btn pricing-btn--primary">
-                Proプランで始める
+                Proで始める
               </a>
             </div>
 
-            {/* Business plan */}
+            {/* Business */}
             <div className="pricing-card fade-up fade-up-delay-3">
               <div className="pricing-plan-name">Business</div>
-              <div className="pricing-plan-desc">
-                チーム・法人利用に
-              </div>
+              <div className="pricing-plan-desc">チーム・法人向け</div>
               <div className="pricing-price">
-                <span className="pricing-currency">&yen;</span>
-                <span className="pricing-amount">9,800</span>
+                <span className="pricing-amount">&yen;9,800</span>
                 <span className="pricing-period">/月</span>
               </div>
               <div className="pricing-billing-note">
-                年払いなら&yen;7,980/月(年間&yen;21,840お得)
+                年払いで&yen;7,980/月（年間&yen;21,840お得）
               </div>
               <ul className="pricing-features">
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--included">
-                    <CheckIcon />
-                  </span>
-                  レポート生成無制限
+                  <span className="pricing-check pricing-check--included"><CheckIcon /></span>
+                  レポート無制限
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--included">
-                    <CheckIcon />
-                  </span>
+                  <span className="pricing-check pricing-check--included"><CheckIcon /></span>
                   最高精度AIリサーチ
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--included">
-                    <CheckIcon />
-                  </span>
-                  PDF解析(無制限)
-                </li>
-                <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--included">
-                    <CheckIcon />
-                  </span>
+                  <span className="pricing-check pricing-check--included"><CheckIcon /></span>
                   Proの全機能
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--included">
-                    <CheckIcon />
-                  </span>
-                  チームメンバー5名まで
+                  <span className="pricing-check pricing-check--included"><CheckIcon /></span>
+                  メンバー5名まで含む
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--included">
-                    <CheckIcon />
-                  </span>
+                  <span className="pricing-check pricing-check--included"><CheckIcon /></span>
                   API連携
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--included">
-                    <CheckIcon />
-                  </span>
+                  <span className="pricing-check pricing-check--included"><CheckIcon /></span>
                   専任カスタマーサクセス
                 </li>
                 <li className="pricing-feature-item">
-                  <span className="pricing-check pricing-check--included">
-                    <CheckIcon />
-                  </span>
-                  SLA保証(稼働率99.9%)
+                  <span className="pricing-check pricing-check--included"><CheckIcon /></span>
+                  SLA保証（稼働率99.9%）
+                </li>
+                <li className="pricing-feature-item">
+                  <span className="pricing-check pricing-check--included"><CheckIcon /></span>
+                  SOC2 Type II認証
                 </li>
               </ul>
               <a href="#" className="pricing-btn pricing-btn--outline">
@@ -972,89 +1150,84 @@ export default function RakudaResearchPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          9. FAQ ACCORDION
+          9. FAQ
           ══════════════════════════════════════════════════════ */}
-      <section id="faq" className="section section--alt">
-        <div className="section-inner" style={{ textAlign: "center" }}>
-          <div className="fade-up">
-            <div
-              className="section-label"
-              style={{ justifyContent: "center" }}
-            >
-              <span className="section-label-line" />
-              FAQ
+      <section id="faq" className="section section--faq">
+        <div className="section-inner">
+          <div className="faq-layout">
+            <div className="faq-left fade-up">
+              <p className="section-eyebrow">FAQ</p>
+              <h2 className="section-title">よくある質問</h2>
+              <p className="section-subtitle">
+                解決しない場合は<a href="#" className="faq-contact-link">お問い合わせ</a>からどうぞ。
+                営業日24時間以内に回答します。
+              </p>
             </div>
-            <h2 className="section-title" style={{ margin: "0 auto 16px" }}>
-              よくある質問
-            </h2>
-            <p className="section-subtitle" style={{ margin: "0 auto" }}>
-              ご不明な点があればお気軽にお問い合わせください。
-            </p>
-          </div>
 
-          <div className="faq-list">
-            {[
-              {
-                q: "どんなテーマでもリサーチできますか？",
-                a: "はい、テーマに制限はありません。市場分析、競合調査、技術動向、学術研究、規制情報など、Web上に情報が存在するあらゆるテーマに対応しています。日本語・英語の両方のソースから情報を収集します。",
-              },
-              {
-                q: "出典の正確性はどの程度ですか？",
-                a: "レポート内の全ての記述に出典URLを付与しており、ワンクリックで原文を確認できます。また、Proプラン以上では情報源の信頼性スコアも表示され、政府機関・学術論文・大手メディアなど、ソースの種別も明示されます。",
-              },
-              {
-                q: "PDFは何ページまで解析できますか？",
-                a: "1ファイルあたり最大500ページまで対応しています。日本語・英語のPDFに対応しており、スキャンPDF（画像ベース）もOCR処理により解析可能です。表やグラフの読み取りにも対応しています。",
-              },
-              {
-                q: "セキュリティ対策はどうなっていますか？",
-                a: "アップロードされたファイルおよび生成されたレポートは、AES-256で暗号化して保存されます。データは日本国内のサーバーで処理され、第三者への提供は一切行いません。SOC2 Type II認証を取得済みです。",
-              },
-              {
-                q: "無料プランから有料プランへの移行はスムーズですか？",
-                a: "はい、ワンクリックでアップグレード可能です。無料プランで作成したレポートやデータはすべて引き継がれます。有料プランも、いつでもダウングレード・解約が可能です。縛り期間はありません。",
-              },
-              {
-                q: "チームでの利用は可能ですか？",
-                a: "Businessプランでは最大5名まで1アカウントに含まれます。6名以上の場合はEnterprise向けのカスタムプランをご用意していますので、お問い合わせください。チーム内でのレポート共有・共同編集機能も利用可能です。",
-              },
-            ].map((item, index) => (
-              <div
-                key={index}
-                className={`faq-item ${openFaq === index ? "faq-item--open" : ""} fade-up`}
-                style={{ transitionDelay: `${index * 40}ms` }}
-              >
-                <button
-                  className="faq-question"
-                  onClick={() => toggleFaq(index)}
-                  aria-expanded={openFaq === index}
+            <div className="faq-list">
+              {[
+                {
+                  q: "どんなテーマでもリサーチできますか？",
+                  a: "テーマに制限はありません。市場分析、競合調査、技術動向、学術研究、規制情報など、Web上に情報があるテーマに対応しています。日本語・英語の両方のソースから情報を収集します。特定の業界用語にも対応しており、金融・法務・テクノロジー分野での専門リサーチにも強みがあります。",
+                },
+                {
+                  q: "出典の正確性・信頼性はどう担保していますか？",
+                  a: "レポート内の全ての記述に出典URLを付与しており、ワンクリックで原文を確認できます。Proプラン以上では情報源の信頼性スコア（0-100）も表示。政府機関・学術論文・大手メディア等、ソースの種別を自動分類し、信頼性の低い情報源には警告を表示します。",
+                },
+                {
+                  q: "PDFは何ページまで解析可能ですか？",
+                  a: "1ファイル最大500ページまで対応。日本語・英語PDFはもちろん、スキャンPDF（画像ベース）もOCR処理で解析可能です。表・グラフの読み取りにも対応しており、決算書や調査レポートの数値データも正確に抽出します。",
+                },
+                {
+                  q: "セキュリティは大丈夫ですか？",
+                  a: "アップロードファイル・生成レポートはAES-256で暗号化保存。データ処理は日本国内サーバーで完結し、第三者提供は一切ありません。SOC2 Type II認証取得済み。法人向けBusinessプランではIPアドレス制限・SSO連携もオプションで提供しています。",
+                },
+                {
+                  q: "無料プランに制限期間はありますか？",
+                  a: "ありません。月3レポートまでの制限はありますが、期間制限なくずっと無料で利用可能です。有料プランへのアップグレードはワンクリックで、過去のレポートやデータは全て引き継がれます。解約もいつでも可能で、縛り期間はありません。",
+                },
+                {
+                  q: "チームで利用できますか？",
+                  a: "Businessプランは5名まで1アカウントに含まれます。レポートの共有・共同編集が可能で、チーム内のナレッジを蓄積できます。6名以上の場合はEnterprise向けカスタムプランをご用意しています。",
+                },
+              ].map((item, index) => (
+                <div
+                  key={index}
+                  className={`faq-item ${openFaq === index ? "faq-item--open" : ""} fade-up`}
                 >
-                  <span>{item.q}</span>
-                  <ChevronDown className="faq-chevron" />
-                </button>
-                <div className="faq-answer">
-                  <div className="faq-answer-inner">{item.a}</div>
+                  <button
+                    className="faq-question"
+                    onClick={() => toggleFaq(index)}
+                    aria-expanded={openFaq === index}
+                  >
+                    <span>{item.q}</span>
+                    <ChevronDown className="faq-chevron" />
+                  </button>
+                  <div className="faq-answer">
+                    <div className="faq-answer-inner">{item.a}</div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════
-          10. DARK CTA
+          10. CTA
           ══════════════════════════════════════════════════════ */}
-      <section id="cta" className="section cta-dark">
-        <div className="section-inner fade-up">
+      <section id="cta" className="section cta-section">
+        <div className="cta-bg-pattern" />
+        <div className="section-inner fade-up cta-inner">
           <h2 className="cta-title">
-            リサーチの時間を、意思決定の時間に。
+            次のリサーチは、7分で終わる。
           </h2>
           <p className="cta-subtitle">
-            無料プランで今すぐ体験。クレジットカードの登録は不要です。
-            月3レポートまで、ずっと無料でご利用いただけます。
+            無料プランで今すぐ体験。アカウント作成は10秒。
+            月3レポートまで、ずっと無料です。
           </p>
           <div className="cta-actions">
-            <a href="#" className="btn-primary-hero">
+            <a href="#" className="btn-primary-hero btn-primary-hero--large">
               無料アカウントを作成
               <ArrowRight />
             </a>
@@ -1062,10 +1235,11 @@ export default function RakudaResearchPage() {
               デモを予約する
             </a>
           </div>
-          <p className="cta-note">
-            登録は30秒で完了 &middot; クレジットカード不要 &middot;
-            いつでも解約可能
-          </p>
+          <div className="cta-reassurance">
+            <span><ClockIcon /> 10秒で登録完了</span>
+            <span><ShieldIcon /> クレジットカード不要</span>
+            <span><CheckIcon /> いつでも解約可能</span>
+          </div>
         </div>
       </section>
 
@@ -1081,102 +1255,47 @@ export default function RakudaResearchPage() {
                 <span>ラクダResearch</span>
               </div>
               <p className="footer-desc">
-                AIの力で、リサーチ業務を根本から変える。
-                数時間の調査を、数分で。
+                テーマを入力するだけ。AIが出典付きリサーチレポートを自動生成。
               </p>
             </div>
 
             <div>
               <div className="footer-column-title">プロダクト</div>
               <ul className="footer-links">
-                <li>
-                  <a href="#features" className="footer-link">
-                    機能一覧
-                  </a>
-                </li>
-                <li>
-                  <a href="#pricing" className="footer-link">
-                    料金プラン
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="footer-link">
-                    API
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="footer-link">
-                    アップデート
-                  </a>
-                </li>
+                <li><a href="#features" className="footer-link">機能一覧</a></li>
+                <li><a href="#pricing" className="footer-link">料金プラン</a></li>
+                <li><a href="#" className="footer-link">API</a></li>
+                <li><a href="#" className="footer-link">アップデート</a></li>
               </ul>
             </div>
 
             <div>
               <div className="footer-column-title">サポート</div>
               <ul className="footer-links">
-                <li>
-                  <a href="#faq" className="footer-link">
-                    FAQ
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="footer-link">
-                    ドキュメント
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="footer-link">
-                    お問い合わせ
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="footer-link">
-                    ステータス
-                  </a>
-                </li>
+                <li><a href="#faq" className="footer-link">FAQ</a></li>
+                <li><a href="#" className="footer-link">ドキュメント</a></li>
+                <li><a href="#" className="footer-link">お問い合わせ</a></li>
+                <li><a href="#" className="footer-link">ステータス</a></li>
               </ul>
             </div>
 
             <div>
               <div className="footer-column-title">会社情報</div>
               <ul className="footer-links">
-                <li>
-                  <a href="#" className="footer-link">
-                    運営会社
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="footer-link">
-                    採用情報
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="footer-link">
-                    ブログ
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="footer-link">
-                    お知らせ
-                  </a>
-                </li>
+                <li><a href="#" className="footer-link">運営会社</a></li>
+                <li><a href="#" className="footer-link">採用情報</a></li>
+                <li><a href="#" className="footer-link">ブログ</a></li>
+                <li><a href="#" className="footer-link">お知らせ</a></li>
               </ul>
             </div>
           </div>
 
           <div className="footer-bottom">
-            <span>&copy; 2026 ラクダResearch. All rights reserved.</span>
+            <span>&copy; 2026 Rakuda Research, Inc. All rights reserved.</span>
             <div className="footer-legal-links">
-              <a href="#" className="footer-legal-link">
-                利用規約
-              </a>
-              <a href="#" className="footer-legal-link">
-                プライバシーポリシー
-              </a>
-              <a href="#" className="footer-legal-link">
-                特定商取引法
-              </a>
+              <a href="#" className="footer-legal-link">利用規約</a>
+              <a href="#" className="footer-legal-link">プライバシーポリシー</a>
+              <a href="#" className="footer-legal-link">特定商取引法</a>
             </div>
           </div>
         </div>
