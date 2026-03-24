@@ -271,7 +271,7 @@ export default function CostLpPage() {
               <h3 className="feature-card-title">スケール時の限界費用ゼロ</h3>
               <p className="feature-card-desc">
                 リサーチ需要が2倍になっても、人を雇う必要なし。
-                Business プランなら無制限レポート。
+                Enterprise プランなら無制限レポート。
                 組織拡大フェーズに最適です。
               </p>
             </div>
@@ -305,7 +305,7 @@ export default function CostLpPage() {
                 <li className="pricing-feature-item"><span className="pricing-check pricing-check--included"><CheckIcon /></span> 出典URL付きレポート</li>
                 <li className="pricing-feature-item"><span className="pricing-check pricing-check--included"><CheckIcon /></span> Markdown出力</li>
               </ul>
-              <a href="../../signup" className="pricing-btn pricing-btn--outline">無料で始める</a>
+              <a href="../../signup?plan=free" className="pricing-btn pricing-btn--outline">無料で始める</a>
             </div>
 
             <div className="pricing-card pricing-card--featured fade-up fade-up-delay-2">
@@ -326,11 +326,11 @@ export default function CostLpPage() {
                 <li className="pricing-feature-item"><span className="pricing-check pricing-check--accent"><CheckIcon /></span> レポートテンプレート</li>
                 <li className="pricing-feature-item"><span className="pricing-check pricing-check--accent"><CheckIcon /></span> 優先サポート</li>
               </ul>
-              <a href="../../signup" className="pricing-btn pricing-btn--primary">Proで始める</a>
+              <a href="../../signup?plan=pro" className="pricing-btn pricing-btn--primary">Proで始める</a>
             </div>
 
             <div className="pricing-card fade-up fade-up-delay-3">
-              <div className="pricing-plan-name">Business</div>
+              <div className="pricing-plan-name">Enterprise</div>
               <div className="pricing-plan-desc">チーム・法人向け</div>
               <div className="pricing-price">
                 <span className="pricing-amount">&yen;9,800</span>
@@ -380,7 +380,7 @@ export default function CostLpPage() {
                 },
                 {
                   q: "チームで使う場合のコストメリットは？",
-                  a: "Businessプラン（月9,800円）は5名まで含み、レポート無制限。5人チームなら1人あたり月1,960円。外注リサーチを5人分削減すると、年間で数千万円規模のコスト削減になるケースが多いです。",
+                  a: "Enterpriseプラン（月9,800円）は5名まで含み、レポート無制限。5人チームなら1人あたり月1,960円。外注リサーチを5人分削減すると、年間で数千万円規模のコスト削減になるケースが多いです。",
                 },
               ].map((item, i) => (
                 <div key={i} className={`faq-item ${openFaq === i ? "faq-item--open" : ""}`}>

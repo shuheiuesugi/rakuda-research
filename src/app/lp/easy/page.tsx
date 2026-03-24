@@ -350,7 +350,7 @@ export default function EasyLpPage() {
                 <li className="pricing-feature-item"><span className="pricing-check pricing-check--included"><CheckIcon /></span> PDFの要約（月5つまで）</li>
                 <li className="pricing-feature-item"><span className="pricing-check pricing-check--included"><CheckIcon /></span> 出典URLつきレポート</li>
               </ul>
-              <a href="../../signup" className="pricing-btn pricing-btn--outline">無料で始める</a>
+              <a href="../../signup?plan=free" className="pricing-btn pricing-btn--outline">無料で始める</a>
             </div>
 
             <div className="pricing-card pricing-card--featured fade-up fade-up-delay-2">
@@ -370,11 +370,11 @@ export default function EasyLpPage() {
                 <li className="pricing-feature-item"><span className="pricing-check pricing-check--accent"><CheckIcon /></span> PDF・Word・Markdownで出力</li>
                 <li className="pricing-feature-item"><span className="pricing-check pricing-check--accent"><CheckIcon /></span> レポートのテンプレート</li>
               </ul>
-              <a href="../../signup" className="pricing-btn pricing-btn--primary">Proで始める</a>
+              <a href="../../signup?plan=pro" className="pricing-btn pricing-btn--primary">Proで始める</a>
             </div>
 
             <div className="pricing-card fade-up fade-up-delay-3">
-              <div className="pricing-plan-name">Business</div>
+              <div className="pricing-plan-name">Enterprise</div>
               <div className="pricing-plan-desc">チームで使いたい方</div>
               <div className="pricing-price">
                 <span className="pricing-amount">&yen;9,800</span>

@@ -1046,7 +1046,7 @@ export default function RakudaResearchPage() {
                   Markdown出力
                 </li>
               </ul>
-              <a href="./signup" className="pricing-btn pricing-btn--outline">
+              <a href="./signup?plan=free" className="pricing-btn pricing-btn--outline">
                 無料で始める
               </a>
             </div>
@@ -1093,14 +1093,14 @@ export default function RakudaResearchPage() {
                   優先サポート
                 </li>
               </ul>
-              <a href="./signup" className="pricing-btn pricing-btn--primary">
+              <a href="./signup?plan=pro" className="pricing-btn pricing-btn--primary">
                 Proで始める
               </a>
             </div>
 
-            {/* Business */}
+            {/* Enterprise */}
             <div className="pricing-card fade-up fade-up-delay-3">
-              <div className="pricing-plan-name">Business</div>
+              <div className="pricing-plan-name">Enterprise</div>
               <div className="pricing-plan-desc">チーム・法人向け</div>
               <div className="pricing-price">
                 <span className="pricing-amount">&yen;9,800</span>
@@ -1182,7 +1182,7 @@ export default function RakudaResearchPage() {
                 },
                 {
                   q: "セキュリティは大丈夫ですか？",
-                  a: "アップロードファイル・生成レポートはAES-256で暗号化保存。データ処理は日本国内サーバーで完結し、第三者提供は一切ありません。SOC2 Type II認証取得済み。法人向けBusinessプランではIPアドレス制限・SSO連携もオプションで提供しています。",
+                  a: "アップロードファイル・生成レポートはAES-256で暗号化保存。データ処理は日本国内サーバーで完結し、第三者提供は一切ありません。SOC2 Type II認証取得済み。法人向けEnterpriseプランではIPアドレス制限・SSO連携もオプションで提供しています。",
                 },
                 {
                   q: "無料プランに制限期間はありますか？",
@@ -1190,7 +1190,7 @@ export default function RakudaResearchPage() {
                 },
                 {
                   q: "チームで利用できますか？",
-                  a: "Businessプランは5名まで1アカウントに含まれます。レポートの共有・共同編集が可能で、チーム内のナレッジを蓄積できます。6名以上の場合はEnterprise向けカスタムプランをご用意しています。",
+                  a: "Enterpriseプランは5名まで1アカウントに含まれます。レポートの共有・共同編集が可能で、チーム内のナレッジを蓄積できます。6名以上の場合はEnterprise向けカスタムプランをご用意しています。",
                 },
               ].map((item, index) => (
                 <div
