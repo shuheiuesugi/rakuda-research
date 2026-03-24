@@ -428,7 +428,7 @@ export default function EasyLpPage() {
                   a: "いつでもやめられます。解約の手続きもボタン1つで完了します。しつこい引き止めや違約金はありません。無料プランならそもそも「解約」の手続きすら不要で、使わなくなったらそのまま放置してOKです。",
                 },
               ].map((item, i) => (
-                <div key={i} className={`faq-item ${openFaq === i ? "faq-item--open" : ""} fade-up`}>
+                <div key={i} className={`faq-item ${openFaq === i ? "faq-item--open" : ""}`}>
                   <button className="faq-question" onClick={() => toggleFaq(i)} aria-expanded={openFaq === i}>
                     <span>{item.q}</span>
                     <ChevronDown className="faq-chevron" />

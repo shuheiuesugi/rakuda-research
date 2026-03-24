@@ -1195,7 +1195,7 @@ export default function RakudaResearchPage() {
               ].map((item, index) => (
                 <div
                   key={index}
-                  className={`faq-item ${openFaq === index ? "faq-item--open" : ""} fade-up`}
+                  className={`faq-item ${openFaq === index ? "faq-item--open" : ""}`}
                 >
                   <button
                     className="faq-question"

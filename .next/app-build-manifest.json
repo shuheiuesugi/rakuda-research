@@ -27,7 +27,7 @@
       "static/chunks/4bd1b696-c023c6e3521b1417.js",
       "static/chunks/255-7c00629f598c52f5.js",
       "static/chunks/main-app-b5b9099fae42ea64.js",
-      "static/chunks/app/page-121076d070bdc1b4.js"
+      "static/chunks/app/page-89e9c3f6de2fcdbd.js"
     ],
     "/signup/page": [
       "static/chunks/webpack-4c038708db0faefd.js",
@@ -36,19 +36,19 @@
       "static/chunks/main-app-b5b9099fae42ea64.js",
       "static/chunks/app/signup/page-e58d78d09242d3d8.js"
     ],
-    "/tokushoho/page": [
-      "static/chunks/webpack-4c038708db0faefd.js",
-      "static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "static/chunks/255-7c00629f598c52f5.js",
-      "static/chunks/main-app-b5b9099fae42ea64.js",
-      "static/chunks/app/tokushoho/page-77319d30e179af0a.js"
-    ],
     "/terms/page": [
       "static/chunks/webpack-4c038708db0faefd.js",
       "static/chunks/4bd1b696-c023c6e3521b1417.js",
       "static/chunks/255-7c00629f598c52f5.js",
       "static/chunks/main-app-b5b9099fae42ea64.js",
       "static/chunks/app/terms/page-77319d30e179af0a.js"
+    ],
+    "/tokushoho/page": [
+      "static/chunks/webpack-4c038708db0faefd.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/255-7c00629f598c52f5.js",
+      "static/chunks/main-app-b5b9099fae42ea64.js",
+      "static/chunks/app/tokushoho/page-77319d30e179af0a.js"
     ],
     "/security/page": [
       "static/chunks/webpack-4c038708db0faefd.js",
@@ -76,7 +76,7 @@
       "static/chunks/4bd1b696-c023c6e3521b1417.js",
       "static/chunks/255-7c00629f598c52f5.js",
       "static/chunks/main-app-b5b9099fae42ea64.js",
-      "static/chunks/app/lp/cost/page-b03d7f80f3c93bfd.js"
+      "static/chunks/app/lp/cost/page-187d7b0c0d9a4d0d.js"
     ],
     "/lp/easy/layout": [
       "static/chunks/webpack-4c038708db0faefd.js",
@@ -90,7 +90,7 @@
       "static/chunks/4bd1b696-c023c6e3521b1417.js",
       "static/chunks/255-7c00629f598c52f5.js",
       "static/chunks/main-app-b5b9099fae42ea64.js",
-      "static/chunks/app/lp/easy/page-8871ead7500596b0.js"
+      "static/chunks/app/lp/easy/page-c7c7c9a020159177.js"
     ]
   }
 }

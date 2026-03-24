@@ -383,7 +383,7 @@ export default function CostLpPage() {
                   a: "Businessプラン（月9,800円）は5名まで含み、レポート無制限。5人チームなら1人あたり月1,960円。外注リサーチを5人分削減すると、年間で数千万円規模のコスト削減になるケースが多いです。",
                 },
               ].map((item, i) => (
-                <div key={i} className={`faq-item ${openFaq === i ? "faq-item--open" : ""} fade-up`}>
+                <div key={i} className={`faq-item ${openFaq === i ? "faq-item--open" : ""}`}>
                   <button className="faq-question" onClick={() => toggleFaq(i)} aria-expanded={openFaq === i}>
                     <span>{item.q}</span>
                     <ChevronDown className="faq-chevron" />
