@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "特定商取引法に基づく表記 | ラクダResearch",
+  title: "特定商取引法に基づく表記 | RAKUDAリサーチ",
 };
 
 export default function Tokushoho() {
@@ -28,7 +28,7 @@ export default function Tokushoho() {
               <tbody>
                 <tr>
                   <th>販売業者</th>
-                  <td>ラクダResearch運営事務局</td>
+                  <td>RAKUDAリサーチ運営事務局</td>
                 </tr>
                 <tr>
                   <th>運営統括責任者</th>
@@ -48,7 +48,7 @@ export default function Tokushoho() {
                 </tr>
                 <tr>
                   <th>サービスの名称</th>
-                  <td>ラクダResearch（AIリサーチツール）</td>
+                  <td>RAKUDAリサーチ（AIリサーチツール）</td>
                 </tr>
                 <tr>
                   <th>販売価格</th>

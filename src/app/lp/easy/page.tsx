@@ -180,7 +180,7 @@ export default function EasyLpPage() {
             {/* After */}
             <div className="time-card time-card--after fade-up fade-up-delay-3">
               <div className="time-card-header">
-                <span className="time-card-label">ラクダResearch</span>
+                <span className="time-card-label">RAKUDAリサーチ</span>
                 <span className="time-card-badge">かんたん</span>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -214,7 +214,7 @@ export default function EasyLpPage() {
         <div className="section-inner">
           <div className="fade-up" style={{ textAlign: "center" }}>
             <p className="section-eyebrow">Features</p>
-            <h2 className="section-title">ラクダResearchでできること</h2>
+            <h2 className="section-title">RAKUDAリサーチでできること</h2>
             <p className="section-subtitle section-subtitle--center">
               むずかしい操作はありません。3つのことが、とてもかんたんにできます。
             </p>

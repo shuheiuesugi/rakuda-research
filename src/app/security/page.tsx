@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "セキュリティ | ラクダResearch",
+  title: "セキュリティ | RAKUDAリサーチ",
 };
 
 export default function Security() {
@@ -25,7 +25,7 @@ export default function Security() {
             <p className="legal-updated">最終更新日: 2026年3月24日</p>
 
             <p className="security-lead">
-              ラクダResearchは、お客様のリサーチデータとアップロードファイルを守ることを最優先に設計されています。
+              RAKUDAリサーチは、お客様のリサーチデータとアップロードファイルを守ることを最優先に設計されています。
               以下に当社のセキュリティ対策の概要をご説明します。
             </p>
 

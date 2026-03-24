@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "ラクダResearch — AIリサーチ",
+  title: "RAKUDAリサーチ — AIリサーチ",
   description: "Web検索・PDF解析・要約を自動化。",
   icons: {
     icon: { url: "/rakuda-research/favicon.svg", type: "image/svg+xml" },

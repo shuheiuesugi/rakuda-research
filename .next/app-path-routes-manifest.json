@@ -4,9 +4,9 @@
   "/page": "/",
   "/signup/page": "/signup",
   "/terms/page": "/terms",
-  "/tokushoho/page": "/tokushoho",
   "/security/page": "/security",
   "/privacy/page": "/privacy",
-  "/lp/cost/page": "/lp/cost",
-  "/lp/easy/page": "/lp/easy"
+  "/tokushoho/page": "/tokushoho",
+  "/lp/easy/page": "/lp/easy",
+  "/lp/cost/page": "/lp/cost"
 }

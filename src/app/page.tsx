@@ -553,7 +553,7 @@ export default function RakudaResearchPage() {
             {/* After */}
             <div className="time-card time-card--after fade-up fade-up-delay-3">
               <div className="time-card-header">
-                <span className="time-card-label">ラクダResearch</span>
+                <span className="time-card-label">RAKUDAリサーチ</span>
                 <span className="time-card-badge">AI-Powered</span>
               </div>
               <div className="time-card-timer">
@@ -950,7 +950,7 @@ export default function RakudaResearchPage() {
               <p className="usecase-desc">
                 戦略コンサルタントがクライアントへの提案書を作成する際、
                 市場規模・競合動向・規制環境のリサーチに丸1日かかっていた工程を、
-                ラクダResearchで2時間に短縮。出典の網羅性も向上。
+                RAKUDAリサーチで2時間に短縮。出典の網羅性も向上。
               </p>
               <div className="usecase-quote">
                 <p>&ldquo;以前はリサーチが辛くて避けていた案件も、今は積極的に受けられる&rdquo;</p>

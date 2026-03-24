@@ -113,7 +113,7 @@ export default function CostLpPage() {
             </h1>
             <p className="hero-subtitle fade-up fade-up-delay-2" style={{ maxWidth: 520, margin: "0 auto 32px", textAlign: "center" }}>
               1案件30万円の外注リサーチ、月4本で120万円。
-              ラクダResearchなら月額2,980円で30レポート。
+              RAKUDAリサーチなら月額2,980円で30レポート。
               1レポートあたり約100円で完結します。
             </p>
             <div className="hero-actions fade-up fade-up-delay-3" style={{ justifyContent: "center" }}>
@@ -202,7 +202,7 @@ export default function CostLpPage() {
             {/* ラクダ */}
             <div className="pricing-card pricing-card--featured">
               <div className="pricing-popular-badge">コスト最適</div>
-              <div className="pricing-plan-name">ラクダResearch</div>
+              <div className="pricing-plan-name">RAKUDAリサーチ</div>
               <div className="pricing-plan-desc">AIリサーチツール</div>
               <div className="pricing-price">
                 <span className="pricing-amount">&sim;100円</span>
@@ -260,7 +260,7 @@ export default function CostLpPage() {
               <h3 className="feature-card-title">固定費モデルで予算管理が楽</h3>
               <p className="feature-card-desc">
                 外注は案件ごとに見積り・発注・検収。
-                ラクダは月額定額制。何件リサーチしても追加費用なし。
+                RAKUDAリサーチは月額定額制。何件リサーチしても追加費用なし。
                 経理処理もシンプル。
               </p>
             </div>
@@ -364,7 +364,7 @@ export default function CostLpPage() {
               {[
                 {
                   q: "外注リサーチと品質は比べられますか？",
-                  a: "用途によります。市場概観・競合マッピング・定量データ収集では、ラクダResearchの方が網羅性・速度・コストの全てで優位です。一方、業界インサイダーへのヒアリングや、非公開情報へのアクセスが必要なリサーチは外注が適しています。まずラクダで土台を作り、足りない部分だけ外注する「ハイブリッド方式」が最もコスト効率が高いです。",
+                  a: "用途によります。市場概観・競合マッピング・定量データ収集では、RAKUDAリサーチの方が網羅性・速度・コストの全てで優位です。一方、業界インサイダーへのヒアリングや、非公開情報へのアクセスが必要なリサーチは外注が適しています。まずラクダで土台を作り、足りない部分だけ外注する「ハイブリッド方式」が最もコスト効率が高いです。",
                 },
                 {
                   q: "追加費用は発生しますか？",
@@ -372,7 +372,7 @@ export default function CostLpPage() {
                 },
                 {
                   q: "ROIの計算方法を教えてください",
-                  a: "典型的な計算: 外注リサーチ月4件×30万円 = 120万円/月。ラクダPro = 2,980円/月。差額117万円/月、年間1,404万円の削減。社内リサーチャーの人件費換算でも、月4件×25,000円=10万円 → 2,980円で97%削減。無料相談でお客様の実データに基づいたROI試算も可能です。",
+                  a: "典型的な計算: 外注リサーチ月4件×30万円 = 120万円/月。RAKUDA Pro = 2,980円/月。差額117万円/月、年間1,404万円の削減。社内リサーチャーの人件費換算でも、月4件×25,000円=10万円 → 2,980円で97%削減。無料相談でお客様の実データに基づいたROI試算も可能です。",
                 },
                 {
                   q: "無料プランだけで十分ですか？",

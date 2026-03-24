@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "利用規約 | ラクダResearch",
+  title: "利用規約 | RAKUDAリサーチ",
 };
 
 export default function Terms() {
@@ -26,7 +26,7 @@ export default function Terms() {
 
             <section>
               <h2>第1条（適用）</h2>
-              <p>本利用規約（以下「本規約」）は、ラクダResearch運営事務局（以下「当社」）が提供するAIリサーチサービス「ラクダResearch」（以下「本サービス」）の利用に関する条件を定めるものです。ユーザーは本規約に同意の上、本サービスを利用するものとします。</p>
+              <p>本利用規約（以下「本規約」）は、RAKUDAリサーチ運営事務局（以下「当社」）が提供するAIリサーチサービス「RAKUDAリサーチ」（以下「本サービス」）の利用に関する条件を定めるものです。ユーザーは本規約に同意の上、本サービスを利用するものとします。</p>
             </section>
 
             <section>
