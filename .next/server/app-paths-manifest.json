@@ -5,8 +5,8 @@
   "/signup/page": "app/signup/page.js",
   "/tokushoho/page": "app/tokushoho/page.js",
   "/terms/page": "app/terms/page.js",
-  "/privacy/page": "app/privacy/page.js",
   "/security/page": "app/security/page.js",
-  "/lp/easy/page": "app/lp/easy/page.js",
-  "/lp/cost/page": "app/lp/cost/page.js"
+  "/privacy/page": "app/privacy/page.js",
+  "/lp/cost/page": "app/lp/cost/page.js",
+  "/lp/easy/page": "app/lp/easy/page.js"
 }

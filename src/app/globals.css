@@ -258,8 +258,18 @@ strong {
   gap: 10px;
   font-weight: 700;
   font-size: 1.05rem;
-  color: var(--color-primary);
+  color: #fff;
   letter-spacing: -0.01em;
+  transition: color var(--transition-normal);
+}
+
+.site-header--scrolled .header-logo {
+  color: #1a1a2e;
+}
+
+.header-logo-svg {
+  color: inherit;
+  transition: color var(--transition-normal);
 }
 
 .header-logo-text {
