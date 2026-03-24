@@ -315,7 +315,7 @@ export default function RakudaResearchPage() {
             <a href="#faq" className="header-nav-link">
               FAQ
             </a>
-            <a href="#cta" className="header-cta">
+            <a href="./signup" className="header-cta">
               無料で始める
               <ArrowRight size={14} />
             </a>
@@ -359,7 +359,7 @@ export default function RakudaResearchPage() {
             </p>
 
             <div className="hero-actions fade-up fade-up-delay-3">
-              <a href="#cta" className="btn-primary-hero">
+              <a href="./signup" className="btn-primary-hero">
                 無料で試してみる
                 <ArrowRight />
               </a>
@@ -1044,7 +1044,7 @@ export default function RakudaResearchPage() {
                   Markdown出力
                 </li>
               </ul>
-              <a href="#" className="pricing-btn pricing-btn--outline">
+              <a href="./signup" className="pricing-btn pricing-btn--outline">
                 無料で始める
               </a>
             </div>
@@ -1091,7 +1091,7 @@ export default function RakudaResearchPage() {
                   優先サポート
                 </li>
               </ul>
-              <a href="#" className="pricing-btn pricing-btn--primary">
+              <a href="./signup" className="pricing-btn pricing-btn--primary">
                 Proで始める
               </a>
             </div>
@@ -1141,7 +1141,7 @@ export default function RakudaResearchPage() {
                   SOC2 Type II認証
                 </li>
               </ul>
-              <a href="#" className="pricing-btn pricing-btn--outline">
+              <a href="./book-call" className="pricing-btn pricing-btn--outline">
                 お問い合わせ
               </a>
             </div>
@@ -1227,11 +1227,11 @@ export default function RakudaResearchPage() {
             月3レポートまで、ずっと無料です。
           </p>
           <div className="cta-actions">
-            <a href="#" className="btn-primary-hero btn-primary-hero--large">
+            <a href="./signup" className="btn-primary-hero btn-primary-hero--large">
               無料アカウントを作成
               <ArrowRight />
             </a>
-            <a href="#" className="btn-secondary-hero">
+            <a href="./book-call" className="btn-secondary-hero">
               デモを予約する
             </a>
           </div>
@@ -1293,9 +1293,10 @@ export default function RakudaResearchPage() {
           <div className="footer-bottom">
             <span>&copy; 2026 Rakuda Research, Inc. All rights reserved.</span>
             <div className="footer-legal-links">
-              <a href="#" className="footer-legal-link">利用規約</a>
-              <a href="#" className="footer-legal-link">プライバシーポリシー</a>
-              <a href="#" className="footer-legal-link">特定商取引法</a>
+              <a href="./terms" className="footer-legal-link">利用規約</a>
+              <a href="./privacy" className="footer-legal-link">プライバシーポリシー</a>
+              <a href="./tokushoho" className="footer-legal-link">特定商取引法</a>
+              <a href="./security" className="footer-legal-link">セキュリティ</a>
             </div>
           </div>
         </div>
