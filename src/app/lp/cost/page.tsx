@@ -159,12 +159,7 @@ export default function CostLpPage() {
             </p>
           </div>
 
-          <div style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 20,
-            marginTop: 48,
-          }} className="fade-up fade-up-delay-1">
+          <div className="compare-grid-3 fade-up fade-up-delay-1">
             {/* 外注 */}
             <div className="pricing-card">
               <div className="pricing-plan-name" style={{ color: "#DC2626" }}>外注リサーチ</div>
