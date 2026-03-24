@@ -135,6 +135,10 @@ rakuda-research/
 - メインLPのハンバーガーボタンは表示されるが、タップしてもナビゲーションは開かない（onClickハンドラ未実装の箇所あり）
 - LP variants ではonClick未接続の箇所あり
 
+### ソーシャルプルーフ（削除済み）
+- ヒーローセクションの「導入企業」ロゴ（McKinsey, Deloitte, Goldman Sachs, NRI）は架空のため削除済み
+- 実際の導入企業が確保でき次第、復活可能
+
 ### コンポーネント重複
 - Header / Footer / FAQ / Pricing 等のコンポーネントが3ファイル（page.tsx, cost, easy）で重複
 - 今後の改修効率のため `src/components/` への切り出しを推奨

@@ -371,15 +371,6 @@ export default function RakudaResearchPage() {
               </a>
             </div>
 
-            <div className="hero-trust fade-up fade-up-delay-4">
-              <span className="hero-trust-label">導入企業</span>
-              <div className="hero-trust-logos">
-                <span className="hero-trust-logo">McKinsey</span>
-                <span className="hero-trust-logo">Deloitte</span>
-                <span className="hero-trust-logo">Goldman Sachs</span>
-                <span className="hero-trust-logo">NRI</span>
-              </div>
-            </div>
           </div>
 
           {/* Right: report mockup */}
