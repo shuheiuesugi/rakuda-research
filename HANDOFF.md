@@ -149,7 +149,7 @@ rakuda-research/
 
 ### ローカル開発
 ```bash
-cd /tmp/rakuda-redesign/rakuda-research
+cd ${OUTPUT_BASE}/rakuda-redesign/rakuda-research
 npm install
 npm run dev        # http://localhost:3000/rakuda-research/
 ```

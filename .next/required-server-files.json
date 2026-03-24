@@ -100,7 +100,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "/private/tmp/rakuda-redesign/rakuda-research",
+    "outputFileTracingRoot": "/Users/macmini-1/Library/CloudStorage/GoogleDrive-shuhei@aviondor.com/共有ドライブ/株式会社Aviondor Group/社内用/01_株式会社Aviondor Group/00_全社/24_Claude/shuhei/rakuda-redesign/rakuda-research",
     "experimental": {
       "useSkewCookie": false,
       "cacheLife": {
@@ -290,10 +290,10 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.ts",
     "turbopack": {
-      "root": "/private/tmp/rakuda-redesign/rakuda-research"
+      "root": "/Users/macmini-1/Library/CloudStorage/GoogleDrive-shuhei@aviondor.com/共有ドライブ/株式会社Aviondor Group/社内用/01_株式会社Aviondor Group/00_全社/24_Claude/shuhei/rakuda-redesign/rakuda-research"
     }
   },
-  "appDir": "/private/tmp/rakuda-redesign/rakuda-research",
+  "appDir": "/Users/macmini-1/Library/CloudStorage/GoogleDrive-shuhei@aviondor.com/共有ドライブ/株式会社Aviondor Group/社内用/01_株式会社Aviondor Group/00_全社/24_Claude/shuhei/rakuda-redesign/rakuda-research",
   "relativeAppDir": "",
   "files": [
     ".next/routes-manifest.json",
