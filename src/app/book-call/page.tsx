@@ -55,8 +55,8 @@ export default function BookCall() {
                   <li>
                     <span className="bc-check">&#x2714;</span>
                     <div>
-                      <strong>月額3,980円〜で導入可能</strong>
-                      <span>Starterプランは永年無料。まず3レポートお試し。</span>
+                      <strong>月額2,980円〜で導入可能</strong>
+                      <span>Freeプランは永年無料。まず3レポートお試し。</span>
                     </div>
                   </li>
                 </ul>

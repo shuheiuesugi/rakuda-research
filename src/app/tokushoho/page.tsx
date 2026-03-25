@@ -53,10 +53,9 @@ export default function Tokushoho() {
                 <tr>
                   <th>販売価格</th>
                   <td>
-                    Starterプラン: 無料<br />
-                    Standardプラン: 月額3,980円（税抜）<br />
-                    Enterpriseプラン: 月額9,800円（税抜）<br />
-                    ※年額プランあり（2ヶ月分割引）
+                    Freeプラン: 無料（月3レポート、クレジットカード不要）<br />
+                    Proプラン: 月額2,980円（税抜）／年額プラン月額2,480円（税抜）<br />
+                    Enterpriseプラン: 月額9,800円（税抜）／年額プラン月額7,980円（税抜）
                   </td>
                 </tr>
                 <tr>

@@ -63,6 +63,7 @@ export default function CostLpPage() {
   useScrollAnimation();
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setHeaderScrolled(window.scrollY > 20);
@@ -92,9 +93,21 @@ export default function CostLpPage() {
             <a href="#faq" className="header-nav-link">FAQ</a>
             <a href="../../signup" className="header-cta">無料で始める <ArrowRight size={14} /></a>
           </nav>
-          <button className="mobile-menu-btn" aria-label="メニューを開く"><span /><span /><span /></button>
+          <button className={`mobile-menu-btn${mobileMenuOpen ? " active" : ""}`} aria-label="メニューを開く" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}><span /><span /><span /></button>
         </div>
       </header>
+
+      {mobileMenuOpen && (
+        <div className="mobile-nav-overlay" onClick={() => setMobileMenuOpen(false)}>
+          <nav className="mobile-nav" onClick={(e) => e.stopPropagation()}>
+            <a href="#features" onClick={() => setMobileMenuOpen(false)}>機能</a>
+            <a href="#pricing" onClick={() => setMobileMenuOpen(false)}>料金</a>
+            <a href="#faq" onClick={() => setMobileMenuOpen(false)}>FAQ</a>
+            <a href="../../book-call" className="mobile-nav-cta-secondary" onClick={() => setMobileMenuOpen(false)}>無料相談</a>
+            <a href="../../signup" className="mobile-nav-cta" onClick={() => setMobileMenuOpen(false)}>無料で始める <span>→</span></a>
+          </nav>
+        </div>
+      )}
 
       {/* ── HERO ── */}
       <section className="hero" style={{ minHeight: "auto", padding: "140px 24px 80px" }}>

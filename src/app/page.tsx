@@ -220,6 +220,7 @@ export default function RakudaResearchPage() {
   const scrollProgress = useScrollProgress();
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Counter animations for hero stats
   const stat1 = useCountUp(87, 2200);
@@ -323,13 +324,27 @@ export default function RakudaResearchPage() {
             </a>
           </nav>
 
-          <button className="mobile-menu-btn" aria-label="メニューを開く">
+          <button className={`mobile-menu-btn${mobileMenuOpen ? " active" : ""}`} aria-label="メニューを開く" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             <span />
             <span />
             <span />
           </button>
         </div>
       </header>
+
+      {/* Mobile Navigation */}
+      {mobileMenuOpen && (
+        <div className="mobile-nav-overlay" onClick={() => setMobileMenuOpen(false)}>
+          <nav className="mobile-nav" onClick={(e) => e.stopPropagation()}>
+            <a href="#features" onClick={() => setMobileMenuOpen(false)}>機能</a>
+            <a href="#how-it-works" onClick={() => setMobileMenuOpen(false)}>使い方</a>
+            <a href="#pricing" onClick={() => setMobileMenuOpen(false)}>料金</a>
+            <a href="#faq" onClick={() => setMobileMenuOpen(false)}>FAQ</a>
+            <a href="./book-call" className="mobile-nav-cta-secondary" onClick={() => setMobileMenuOpen(false)}>無料相談</a>
+            <a href="./signup" className="mobile-nav-cta" onClick={() => setMobileMenuOpen(false)}>無料で始める <span>→</span></a>
+          </nav>
+        </div>
+      )}
 
       {/* ══════════════════════════════════════════════════════
           2. HERO
