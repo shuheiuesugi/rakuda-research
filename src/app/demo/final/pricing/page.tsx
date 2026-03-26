@@ -185,13 +185,13 @@ export default function PricingPage() {
           padding: "0 32px",
         }}
       >
-        <Logo />
+        <a href="../" style={{ textDecoration: "none" }}><Logo /></a>
         <nav style={{ display: "flex", alignItems: "center", gap: "24px" }}>
-          <a href="/demo/final/pricing" style={{ fontSize: "13px", color: TEXT_PRIMARY, textDecoration: "none", fontWeight: 600 }}>料金</a>
-          <a href="/demo/final/contact" style={{ fontSize: "13px", color: TEXT_MUTED, textDecoration: "none" }}>お問い合わせ</a>
-          <a href="#" style={{ fontSize: "13px", color: TEXT_MUTED, textDecoration: "none" }}>ログイン</a>
+          <a href="../pricing" style={{ fontSize: "13px", color: TEXT_PRIMARY, textDecoration: "none", fontWeight: 600 }}>料金</a>
+          <a href="../contact" style={{ fontSize: "13px", color: TEXT_MUTED, textDecoration: "none" }}>お問い合わせ</a>
+          <a href="../login" style={{ fontSize: "13px", color: TEXT_MUTED, textDecoration: "none" }}>ログイン</a>
           <a
-            href="#"
+            href="../signup"
             style={{
               padding: "7px 16px",
               background: `linear-gradient(135deg, ${AMBER}, #D97706)`,
@@ -352,7 +352,7 @@ export default function PricingPage() {
                 </div>
 
                 <a
-                  href={plan.name === "Enterprise" ? "/demo/final/contact" : "#"}
+                  href={plan.name === "Enterprise" ? "../contact" : "../signup"}
                   style={{
                     display: "block",
                     textAlign: "center",
@@ -419,8 +419,8 @@ export default function PricingPage() {
       >
         <span>© 2026 Rakuda AI Inc.</span>
         <div style={{ display: "flex", gap: "20px" }}>
-          <a href="./terms" style={{ color: TEXT_FAINT, textDecoration: "none" }}>利用規約</a>
-          <a href="./privacy" style={{ color: TEXT_FAINT, textDecoration: "none" }}>プライバシーポリシー</a>
+          <a href="../terms" style={{ color: TEXT_FAINT, textDecoration: "none" }}>利用規約</a>
+          <a href="../privacy" style={{ color: TEXT_FAINT, textDecoration: "none" }}>プライバシーポリシー</a>
           <a href="mailto:info@rakuda-ai.com" style={{ color: TEXT_FAINT, textDecoration: "none" }}>お問い合わせ</a>
         </div>
       </footer>

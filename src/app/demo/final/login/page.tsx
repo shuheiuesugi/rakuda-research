@@ -196,8 +196,8 @@ export default function LoginPage() {
         borderTop: "1px solid rgba(255,255,255,0.05)",
       }}>
         <div style={{ display: "flex", gap: "20px", justifyContent: "center", marginBottom: "8px" }}>
-          <a href="#" style={{ fontSize: "12px", color: "#475569", textDecoration: "none" }}>利用規約</a>
-          <a href="#" style={{ fontSize: "12px", color: "#475569", textDecoration: "none" }}>プライバシーポリシー</a>
+          <a href="../terms" style={{ fontSize: "12px", color: "#475569", textDecoration: "none" }}>利用規約</a>
+          <a href="../privacy" style={{ fontSize: "12px", color: "#475569", textDecoration: "none" }}>プライバシーポリシー</a>
         </div>
         <p style={{ fontSize: "12px", color: "#475569" }}>© 2026 Rakuda AI Inc.</p>
       </footer>

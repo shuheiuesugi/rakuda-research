@@ -28,7 +28,7 @@ function Header() {
         justifyContent: "space-between",
       }}>
         {/* Logo */}
-        <a href="/demo/final" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
+        <a href="../" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
           <div style={{
             width: 32, height: 32, flexShrink: 0,
             background: "linear-gradient(135deg, #1e3a5f 0%, #1e2d5f 100%)",
@@ -70,25 +70,25 @@ function Header() {
 
         {/* Nav */}
         <nav style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <a href="/demo/final/pricing" style={{
+          <a href="../pricing" style={{
             fontSize: 13, fontWeight: 500, color: "#94A3B8",
             textDecoration: "none", padding: "6px 12px", borderRadius: 6,
           }}>
             料金
           </a>
-          <a href="/demo/final/contact" style={{
+          <a href="../contact" style={{
             fontSize: 13, fontWeight: 500, color: "#94A3B8",
             textDecoration: "none", padding: "6px 12px", borderRadius: 6,
           }}>
             お問い合わせ
           </a>
-          <a href="/demo/final/login" style={{
+          <a href="../login" style={{
             fontSize: 13, fontWeight: 500, color: "#94A3B8",
             textDecoration: "none", padding: "6px 12px", borderRadius: 6,
           }}>
             ログイン
           </a>
-          <a href="/demo/final/signup" style={{
+          <a href="../signup" style={{
             fontSize: 13, fontWeight: 600, color: "#0a0e17",
             textDecoration: "none", padding: "7px 16px", borderRadius: 8,
             background: "linear-gradient(135deg, #f59e0b, #d97706)",
@@ -125,9 +125,9 @@ function Footer() {
         </span>
         <div style={{ display: "flex", gap: 20 }}>
           {[
-            { label: "利用規約", href: "/demo/final/terms" },
-            { label: "プライバシーポリシー", href: "/demo/final/privacy" },
-            { label: "お問い合わせ", href: "/demo/final/contact" },
+            { label: "利用規約", href: "../terms" },
+            { label: "プライバシーポリシー", href: "../privacy" },
+            { label: "お問い合わせ", href: "../contact" },
           ].map((item) => (
             <a
               key={item.href}

@@ -136,6 +136,7 @@ export default function FinalPage() {
               >
                 ホームに戻る
               </button>
+              <a href="./settings" style={{ ...navLinkStyle, background: "none", border: "none", cursor: "pointer", textDecoration: "none" }}>設定</a>
               <div style={{
                 width: "34px", height: "34px", borderRadius: "50%",
                 background: "linear-gradient(135deg, #3B82F6, #1D4ED8)",
@@ -560,6 +561,17 @@ export default function FinalPage() {
           <line x1="5" y1="12" x2="19" y2="12" />
         </svg>
       </button>
+
+      {/* Footer */}
+      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.06)", padding: "24px 32px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <span style={{ fontSize: "12px", color: "#475569" }}>2026 RAKUDA AI</span>
+        <div style={{ display: "flex", gap: "20px" }}>
+          <a href="./pricing" style={{ fontSize: "12px", color: "#475569", textDecoration: "none" }}>料金</a>
+          <a href="./contact" style={{ fontSize: "12px", color: "#475569", textDecoration: "none" }}>お問い合わせ</a>
+          <a href="./terms" style={{ fontSize: "12px", color: "#475569", textDecoration: "none" }}>利用規約</a>
+          <a href="./privacy" style={{ fontSize: "12px", color: "#475569", textDecoration: "none" }}>プライバシーポリシー</a>
+        </div>
+      </footer>
     </div>
   );
 }

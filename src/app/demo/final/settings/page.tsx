@@ -113,10 +113,10 @@ function Field({ label, value }: { label: string; value: string }) {
 }
 
 const sidebarItems = [
-  { label: "検索", icon: "M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z", href: "/demo/final" },
-  { label: "レポート", icon: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z", href: "/demo/final/reports" },
-  { label: "テンプレート", icon: "M4 5h16M4 10h16M4 15h10", href: "/demo/final/templates" },
-  { label: "設定", icon: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z", href: "/demo/final/settings", active: true },
+  { label: "検索", icon: "M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z", href: "../" },
+  { label: "レポート", icon: "M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z", href: "../" },
+  { label: "テンプレート", icon: "M4 5h16M4 10h16M4 15h10", href: "../" },
+  { label: "設定", icon: "M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z", href: "../settings", active: true },
 ];
 
 export default function SettingsPage() {
@@ -157,7 +157,7 @@ export default function SettingsPage() {
           padding: "0 32px",
         }}
       >
-        <Logo />
+        <a href="../" style={{ textDecoration: "none" }}><Logo /></a>
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           <div
             style={{
@@ -423,8 +423,8 @@ export default function SettingsPage() {
       >
         <span>© 2026 Rakuda AI Inc.</span>
         <div style={{ display: "flex", gap: "20px" }}>
-          <a href="./terms" style={{ color: TEXT_FAINT, textDecoration: "none" }}>利用規約</a>
-          <a href="./privacy" style={{ color: TEXT_FAINT, textDecoration: "none" }}>プライバシーポリシー</a>
+          <a href="../terms" style={{ color: TEXT_FAINT, textDecoration: "none" }}>利用規約</a>
+          <a href="../privacy" style={{ color: TEXT_FAINT, textDecoration: "none" }}>プライバシーポリシー</a>
           <a href="mailto:info@rakuda-ai.com" style={{ color: TEXT_FAINT, textDecoration: "none" }}>お問い合わせ</a>
         </div>
       </footer>
